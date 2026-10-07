@@ -7,3 +7,4 @@ estudio/sessao*.json
 .DS_Store
 __pycache__/
 *.pyc
+estudio/.env

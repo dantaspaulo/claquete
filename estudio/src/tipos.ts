@@ -39,6 +39,7 @@ export type Tema = {
   marca: string;
   fonte_titulo: string;
   fonte_texto: string;
+  fundo_imagem?: string;
 };
 
 export type Plano = {

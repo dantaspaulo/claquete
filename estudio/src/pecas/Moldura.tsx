@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentFrame, useVideoConfig } from "remotion";
+import { Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { pilha } from "../fontes";
 import { BARRA } from "../layout";
 import { entra, FPS } from "../tempo";
@@ -13,6 +13,19 @@ export const Fundo: React.FC = () => {
   const t = frame / FPS;
   const a = { x: 0.2 + 0.08 * Math.sin(t / 5), y: 0.25 + 0.06 * Math.cos(t / 6) };
   const b = { x: 0.82 + 0.07 * Math.cos(t / 7), y: 0.78 + 0.05 * Math.sin(t / 4.5) };
+  if (tema.fundo_imagem) {
+    // Foto desfocada atrás da janela, como papel de parede (o efeito dos apps de gravação, sem o app).
+    const zoom = 1.12 + 0.03 * Math.sin(t / 9);
+    return (
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", background: tema.fundo, width, height }}>
+        <Img
+          src={staticFile(tema.fundo_imagem)}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "blur(36px) brightness(0.62) saturate(1.1)", transform: `scale(${zoom})` }}
+        />
+        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 50% 45%, transparent 30%, ${tema.fundo}99 100%)` }} />
+      </div>
+    );
+  }
   return (
     <div
       style={{

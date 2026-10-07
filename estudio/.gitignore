@@ -1,0 +1,6 @@
+.env
+node_modules/
+saida/
+public/aulas/
+public/gravacoes/
+sessao*.json

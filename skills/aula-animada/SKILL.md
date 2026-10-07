@@ -119,15 +119,27 @@ Sai em `saida/<id>/`: `<id>-h.mp4`, `<id>-v.mp4`, `<id>.vtt`, `<id>.srt` e uma *
 
 ## Configurar a voz
 
+O instalador já deixa pronto: as chaves num `.env` do estúdio e a voz na conta da pessoa. Se algo
+ficou de fora, `python3 scripts/kit.py voz` põe a voz configurada na conta e gera `saida/teste-voz.mp3`.
+
 `kit.config.json` → `voz`:
-- **ElevenLabs** (padrão, melhor em português): `voice_id` da voz escolhida na biblioteca deles e a
-  variável `ELEVENLABS_API_KEY`. A resposta já traz o tempo de cada letra.
-- **OpenAI**: `"provedor": "openai"`, `modelo`, `voz` e `instrucoes`. O tempo das palavras vem da
-  transcrição.
+- **ElevenLabs** (padrão): vem a **Raquel**, voz pública em português do Brasil da biblioteca do
+  ElevenLabs, com o modelo `eleven_v4`. Outra voz: troque `voice_id` (e `dono_publico`, se for da
+  biblioteca) e rode `kit.py voz`. A resposta já traz o tempo de cada letra.
+- **OpenAI**: `"provedor": "openai"`, `modelo`, `voz` e `instrucoes`. O tempo das palavras vem da transcrição.
+- **`velocidade`** (padrão 1,1) é aplicada depois da síntese, igual para qualquer modelo, e os tempos
+  das palavras acompanham.
 - A conferência usa a transcrição da OpenAI (`OPENAI_API_KEY`) nos dois casos.
 
-Chave só em variável de ambiente, nunca em arquivo do projeto. Custo de uma aula de 2 min: o TTS
-de ~1.500 caracteres mais centavos de transcrição.
+Chave só no `.env` do estúdio ou em variável de ambiente, nunca em arquivo versionado. Custo de uma
+aula de 2 min: o TTS de uns 2 mil caracteres mais centavos de transcrição.
+
+## A aparência
+
+`kit.config.json` → `tema`: cores, fontes, nome (`marca`) e `fundo_imagem`, a foto desfocada atrás da
+janela (prontas: `fundos/champagne.jpg`, `fundos/oceano.jpg`, `fundos/esmeralda.jpg`; vazio = luzes em
+degradê). O convite final fica em `convite`. Não é preciso app de gravação: janela, sombra, fundo,
+cursor e zoom são do próprio estúdio.
 
 ## Tempo e máquina
 

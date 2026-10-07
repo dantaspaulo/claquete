@@ -27,6 +27,10 @@
             "quando": "três"
           },
           {
+            "texto": "simples",
+            "quando": "simples"
+          },
+          {
             "texto": "resultado na hora",
             "quando": "resultado"
           }
@@ -58,6 +62,10 @@
           {
             "texto": "para quem é o texto",
             "quando": "texto"
+          },
+          {
+            "texto": "o que você espera",
+            "quando": "espera"
           },
           {
             "texto": "tamanho",
@@ -150,8 +158,16 @@
         "sub": "A IA ajuda. A revisão é sua.",
         "chips": [
           {
+            "texto": "a IA ajuda",
+            "quando": "ajuda"
+          },
+          {
             "texto": "revisão final",
             "quando": "confere"
+          },
+          {
+            "texto": "sempre você",
+            "quando": "sempre"
           }
         ]
       }

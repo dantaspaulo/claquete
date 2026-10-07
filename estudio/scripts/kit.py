@@ -8,9 +8,11 @@
   python3 scripts/kit.py montar <id>                     plano, índice do Remotion e conferência do ritmo
   python3 scripts/kit.py renderizar <id> [--formatos h]  renderiza no Remotion
   python3 scripts/kit.py finalizar <id> [--pagina]       som em -14 LUFS, tela parada, folha de quadros
+  python3 scripts/kit.py voz                             põe a voz configurada na sua conta e gera um áudio de teste
 
 Só biblioteca padrão do Python. Precisa de ffmpeg/ffprobe e Node (npx remotion).
-Chaves: ELEVENLABS_API_KEY (voz) e OPENAI_API_KEY (transcrição; voz se provedor = openai).
+Chaves: ELEVENLABS_API_KEY (voz) e OPENAI_API_KEY (transcrição; voz se provedor = openai),
+no ambiente ou no arquivo .env do estúdio (o instalador cria).
 """
 import argparse
 import base64
@@ -41,6 +43,19 @@ ENCERRAMENTO = 4.0    # segundos do convite final
 
 class Erro(Exception):
     pass
+
+
+def carregar_env():
+    """Lê o .env do estúdio (criado pelo instalador) sem sobrescrever o que já está no ambiente."""
+    arq = RAIZ / ".env"
+    if not arq.exists():
+        return
+    for linha in arq.read_text(encoding="utf-8").splitlines():
+        linha = linha.strip()
+        if not linha or linha.startswith("#") or "=" not in linha:
+            continue
+        k, v = linha.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
 # ── utilidades ────────────────────────────────────────────────────────────
@@ -166,10 +181,9 @@ def falado(fala, pronuncia):
 
 def tts_elevenlabs(texto, anterior, seguinte, c):
     v = c["voz"]["elevenlabs"]
-    if "COLOQUE" in v["voice_id"]:
+    if not v.get("voice_id"):
         raise Erro("defina voz.elevenlabs.voice_id no kit.config.json")
     ajustes = dict(v.get("voice_settings", {}))
-    ajustes["speed"] = c["voz"].get("velocidade", 1.0)
     corpo = {"text": texto, "model_id": v["model_id"], "voice_settings": ajustes}
     if anterior:
         corpo["previous_text"] = anterior
@@ -253,8 +267,16 @@ def narrar(id_, partes=None):
         texto, spans = falado(fala, c["pronuncia"])
         if provedor == "elevenlabs":
             audio, al = tts_elevenlabs(texto, falas[i - 2] if i > 1 else "", falas[i] if i < len(falas) else "", c)
-            mp3.write_bytes(audio)
             palavras = tempos_por_caracteres(spans, al, fala)
+            # A velocidade é aplicada depois, igual para qualquer modelo (nem todo modelo respeita "speed").
+            if abs(vel - 1.0) > 0.01:
+                with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as t:
+                    t.write(audio)
+                roda(["ffmpeg", "-y", "-loglevel", "error", "-i", t.name, "-filter:a", f"atempo={vel}", "-b:a", "160k", str(mp3)])
+                os.unlink(t.name)
+                palavras = [{"p": w["p"], "ini": round(w["ini"] / vel, 3), "fim": round(w["fim"] / vel, 3)} for w in palavras]
+            else:
+                mp3.write_bytes(audio)
         else:
             bruto = tts_openai(texto, c)
             with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as t:
@@ -266,6 +288,53 @@ def narrar(id_, partes=None):
             palavras = tempos_por_transcricao(fala, transcrever(mp3), duracao_audio(mp3))
         meta.write_text(json.dumps({"assinatura": assinatura, "fala": fala, "palavras": palavras}, ensure_ascii=False, indent=1))
         print(f"  parte {i}: {duracao_audio(mp3):.1f} s")
+
+
+# ── voz: deixar a voz pronta na conta ───────────────────────────────────
+
+def http(metodo, url, chave_api, corpo=None):
+    dados = json.dumps(corpo).encode() if corpo is not None else None
+    req = urllib.request.Request(url, data=dados, method=metodo,
+                                 headers={"xi-api-key": chave_api, "content-type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return r.status, json.loads(r.read() or b"{}")
+    except urllib.error.HTTPError as e:
+        try:
+            return e.code, json.loads(e.read() or b"{}")
+        except ValueError:
+            return e.code, {}
+
+
+def preparar_voz():
+    c = cfg()
+    if c["voz"].get("provedor", "elevenlabs") != "elevenlabs":
+        print("  provedor de voz não é o ElevenLabs: nada a preparar")
+        return
+    v = c["voz"]["elevenlabs"]
+    k = chave("ELEVENLABS_API_KEY")
+    status, d = http("GET", f"https://api.elevenlabs.io/v1/voices/{v['voice_id']}", k)
+    if status == 200:
+        print(f"  a voz {v.get('nome', v['voice_id'])} já está disponível na sua conta")
+    elif v.get("dono_publico"):
+        status, d = http("POST", f"https://api.elevenlabs.io/v1/voices/add/{v['dono_publico']}/{v['voice_id']}", k,
+                         {"new_name": f"{v.get('nome', 'Voz')} (kit-video-ia)"})
+        if status != 200:
+            raise Erro(f"não consegui pôr a voz na sua conta ({status}: {json.dumps(d)[:300]}). "
+                       "Adicione-a pela biblioteca de vozes do site do ElevenLabs e rode de novo.")
+        novo = d.get("voice_id", v["voice_id"])
+        if novo != v["voice_id"]:
+            texto = (RAIZ / "kit.config.json").read_text(encoding="utf-8").replace(v["voice_id"], novo)
+            (RAIZ / "kit.config.json").write_text(texto, encoding="utf-8")
+            print(f"  voice_id atualizado no kit.config.json: {novo}")
+        print(f"  voz {v.get('nome')} adicionada à sua conta")
+        c = cfg()
+    else:
+        raise Erro(f"a voz {v['voice_id']} não está na sua conta ({status}). Confira o voice_id.")
+    SAIDA.mkdir(exist_ok=True)
+    audio, _ = tts_elevenlabs("Olá! Esta é a voz do seu estúdio. Tudo pronto para a primeira aula.", "", "", c)
+    (SAIDA / "teste-voz.mp3").write_bytes(audio)
+    print(f"  áudio de teste: {SAIDA / 'teste-voz.mp3'}")
 
 
 # ── conferir ─────────────────────────────────────────────────────────────
@@ -539,14 +608,24 @@ def finalizar(id_, formatos, pagina=False):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("comando", choices=["fazer", "validar", "narrar", "conferir", "montar", "renderizar", "finalizar"])
-    ap.add_argument("id")
+    ap.add_argument("comando", choices=["fazer", "validar", "narrar", "conferir", "montar", "renderizar", "finalizar", "voz"])
+    ap.add_argument("id", nargs="?")
     ap.add_argument("--formatos", default="h", help="h, v ou h,v")
     ap.add_argument("--partes", help="só estas partes (narrar), ex.: 1,3")
     ap.add_argument("--refazer", action="store_true", help="conferir: narra de novo as reprovadas, até 2 vezes")
     ap.add_argument("--concorrencia", type=int, help="renderizar: quantos quadros ao mesmo tempo (menos = mais leve para a máquina)")
     ap.add_argument("--pagina", action="store_true", help="finalizar: também a versão leve para página (H.264, AV1 e pôster)")
     a = ap.parse_args()
+    carregar_env()
+    if a.comando == "voz":
+        try:
+            preparar_voz()
+        except Erro as e:
+            print(f"\nPAROU: {e}", file=sys.stderr)
+            sys.exit(1)
+        return
+    if not a.id:
+        ap.error("diga o id da aula (o nome do arquivo em aulas/, sem .json)")
     formatos = [f for f in a.formatos.split(",") if f in ("h", "v")] or ["h"]
     partes = {int(x) for x in a.partes.split(",")} if a.partes else None
     try:

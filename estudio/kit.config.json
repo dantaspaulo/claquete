@@ -1,6 +1,5 @@
 {
-  "_leia": "Configuração do estúdio. Tema, voz, convite final e as travas de conteúdo. Chaves de API NUNCA aqui: use as variáveis ELEVENLABS_API_KEY e OPENAI_API_KEY.",
-
+  "_leia": "Configuração do estúdio. Tema, voz, convite final e as travas de conteúdo. Chaves de API NUNCA aqui: elas ficam no .env do estúdio (o instalador cria) ou nas variáveis ELEVENLABS_API_KEY e OPENAI_API_KEY.",
   "tema": {
     "fundo": "#0f0e0c",
     "fundo2": "#1d1a15",
@@ -11,34 +10,51 @@
     "destaque2": "#b08d57",
     "marca": "Seu Nome",
     "fonte_titulo": "Instrument Serif",
-    "fonte_texto": "Inter"
+    "fonte_texto": "Inter",
+    "fundo_imagem": "fundos/champagne.jpg",
+    "_leia": "fundo_imagem: foto em public/ que vira o fundo desfocado atrás da janela, como papel de parede (o efeito dos apps de gravação, sem o app). Prontas: fundos/champagne.jpg, fundos/oceano.jpg, fundos/esmeralda.jpg. Vazio = luzes em degradê."
   },
-
   "voz": {
     "provedor": "elevenlabs",
     "elevenlabs": {
-      "voice_id": "COLOQUE_O_ID_DA_SUA_VOZ",
-      "model_id": "eleven_multilingual_v2",
-      "voice_settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.2, "use_speaker_boost": true }
+      "_leia": "Raquel, voz pública da biblioteca do ElevenLabs (português do Brasil). 'python3 scripts/kit.py voz' põe a voz na sua conta e gera um áudio de teste. Para outra voz, troque o voice_id (e o dono_publico, se for da biblioteca).",
+      "nome": "Raquel",
+      "voice_id": "GDzHdQOi6jjf8zaXhCYD",
+      "dono_publico": "4a19cd68f5f2e5172b5eddbfaafdb226726e0b4035e27e952df6bbac94b8aada",
+      "model_id": "eleven_v4",
+      "voice_settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.5,
+        "use_speaker_boost": true
+      }
     },
-    "openai": { "modelo": "gpt-4o-mini-tts", "voz": "alloy", "instrucoes": "Fale em português do Brasil, tom de professor que explica a um colega, ritmo natural." },
-    "velocidade": 1.08,
+    "openai": {
+      "modelo": "gpt-4o-mini-tts",
+      "voz": "alloy",
+      "instrucoes": "Fale em português do Brasil, tom de professor que explica a um colega, ritmo natural."
+    },
+    "velocidade": 1.1,
     "pausa_entre_partes": 0.35
   },
-
   "pronuncia": {
-    "_leia": "palavra escrita → como a voz deve dizer. Ex.: siglas soletradas.",
-    "IA": "iá"
+    "_leia": "palavra escrita → como a voz deve dizer (siglas, nomes estrangeiros).",
+    "IA": "iá",
+    "IAs": "iás",
+    "harness": "rárness",
+    "INSS": "I N S S",
+    "SUS": "Sus",
+    "PJe": "pê jota é"
   },
-
   "convite": {
     "titulo": "Gostou da aula?",
     "texto": "Veja as outras em",
     "endereco": "seusite.com.br"
   },
-
-  "trilha": { "arquivo": "", "volume": 0.07 },
-
+  "trilha": {
+    "arquivo": "",
+    "volume": 0.07
+  },
   "travas": {
     "proibidas_na_fala": [],
     "aceitar": {},

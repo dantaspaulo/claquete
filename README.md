@@ -48,7 +48,7 @@ Estas usam cenas ilustradas feitas sob medida para cada aula. O estúdio do kit 
 <br/>
 <a href="https://github.com/dantaspaulo/kit-video-ia/releases/latest/download/tutorial-exemplo-h.mp4"><img src="docs/kit-tutorial.webp" width="66%" alt="Tutorial de tela de exemplo, com zoom e holofote" /></a>
 
-<sub>A aula de exemplo (<code>aulas/exemplo.json</code>, 47 s, deitada e em pé) e o tutorial de exemplo (<code>aulas/tutorial-exemplo.json</code>),<br/>
+<sub>A aula de exemplo (<code>aulas/exemplo.json</code>, 52 s, deitada e em pé) e o tutorial de exemplo (<code>aulas/tutorial-exemplo.json</code>),<br/>
 do jeito que saem do kit, sem edição. Clique para baixar o vídeo com som.</sub>
 
 </div>
@@ -61,28 +61,42 @@ do jeito que saem do kit, sem edição. Clique para baixar o vídeo com som.</su
 npx github:dantaspaulo/kit-video-ia
 ```
 
-O instalador pergunta onde pôr as skills (para você, em todos os projetos, ou só no projeto atual),
-quais instalar, e se cria o estúdio. Sem perguntas: `--tudo`. Outras opções: `--projeto`,
-`--skills aula-animada,tutorial-de-tela`, `--estudio ./minha-pasta`, `--desinstalar`. Nada é
-apagado: skill que já existe vira cópia de segurança.
+Um comando deixa tudo pronto, em cinco passos, e diz o que fez em cada um:
 
-Depois:
+| | O que o instalador faz |
+|---|---|
+| **1. Skills** | copia as três skills para o Claude (para você, ou só para o projeto atual) |
+| **2. Estúdio** | cria a pasta `estudio-video/` com o projeto pronto para renderizar |
+| **3. Ferramentas** | instala as dependências do estúdio (**Remotion**, React, Playwright), baixa o navegador que o Remotion usa para renderizar e o do Playwright para gravar tela, e confere **ffmpeg** e **Python 3**; se faltar, instala pelo gerenciador do sistema (Homebrew, apt, dnf ou winget), com a sua confirmação |
+| **4. Chaves e voz** | pede as chaves do **ElevenLabs** (a voz) e da **OpenAI** (a conferência da fala) sem mostrar na tela, guarda num `.env` só seu, põe a **voz Raquel** na sua conta e gera um áudio de teste |
+| **5. Teste** | valida a aula de exemplo e confere que o Remotion monta o projeto |
+
+Sem perguntas: `--tudo` (usa as chaves que estiverem no ambiente). Outras opções: `--projeto`,
+`--skills aula-animada,tutorial-de-tela`, `--estudio ./minha-pasta`, `--sem-ferramentas`,
+`--desinstalar`. Nada é apagado: skill que já existe vira cópia de segurança.
+
+Depois, a primeira aula:
 
 ```bash
-cd estudio-video && npm install
-npx playwright install chromium          # só para gravar tela
-export ELEVENLABS_API_KEY=...            # a voz (ou use a da OpenAI)
-export OPENAI_API_KEY=...                # a conferência da fala
+cd estudio-video && python3 scripts/kit.py fazer exemplo --formatos h,v
 ```
 
-No `kit.config.json`: o `voice_id` da sua voz, as cores, o nome e o convite final. Abra o Claude e peça:
+Ou abra o Claude e peça:
 
 > faz uma aula narrada animada de 2 minutos sobre como escrever um bom e-mail de cobrança
 
 > grava um tutorial de como cadastrar um cliente no meu sistema, sem mostrar dado real
 
-**Precisa ter:** Node 18+, Python 3, ffmpeg. Funciona no macOS, Linux e Windows.
-**Sem o Claude:** o estúdio roda sozinho, é só seguir os comandos abaixo.
+**A voz:** vem configurada a **Raquel**, a mesma das aulas do ChatADV, uma voz pública em português
+do Brasil da biblioteca do ElevenLabs (modelo `eleven_v4`, um pouco acelerada). Para trocar, é só
+mudar o `voice_id` no `kit.config.json` e rodar `python3 scripts/kit.py voz`.
+
+**App de gravação?** Não precisa. A janela, a sombra, o fundo desfocado como papel de parede, o
+cursor e o zoom são desenhados pelo próprio estúdio. Vêm três fundos prontos (`champagne`, `oceano`
+e `esmeralda`), ou use uma foto sua.
+
+**Precisa ter antes:** Node 18+ (o resto o instalador resolve). Funciona no macOS, Linux e Windows.
+No macOS, o ffmpeg vem pelo [Homebrew](https://brew.sh); sem ele, o instalador avisa o comando.
 
 <br/>
 
