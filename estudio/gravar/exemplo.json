@@ -1,0 +1,16 @@
+{
+  "_leia": "Roteiro de gravação de exemplo, contra a página local de demonstração. Rode: node gravar/gravar.mjs gravar/exemplo.json",
+  "nome": "demo-pedido",
+  "largura": 1280,
+  "altura": 720,
+  "escala": 1,
+  "esconder": [],
+  "proibidos": ["senha", "cpf"],
+  "passos": [
+    { "ir": "demo/index.html", "esperar": 900, "marca": "abertura" },
+    { "digitar": { "em": "#pedido", "texto": "Sou dono de uma padaria e quero avisar meus clientes das novidades. Escreva curto, tom simpático.", "atraso": 28 }, "marca": "pedido" },
+    { "pairar": "#formato", "esperar": 500 },
+    { "escolher": { "em": "#formato", "valor": "lista" }, "esperar": 600, "marca": "formato" },
+    { "clicar": "#gerar", "esperar": 3200, "marca": "resposta" }
+  ]
+}

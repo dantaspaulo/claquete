@@ -1,0 +1,9 @@
+node_modules/
+estudio/node_modules/
+estudio/saida/
+estudio/public/aulas/
+estudio/public/gravacoes/
+estudio/sessao*.json
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,49 @@
+{
+  "_leia": "Configuração do estúdio. Tema, voz, convite final e as travas de conteúdo. Chaves de API NUNCA aqui: use as variáveis ELEVENLABS_API_KEY e OPENAI_API_KEY.",
+
+  "tema": {
+    "fundo": "#0f0e0c",
+    "fundo2": "#1d1a15",
+    "janela": "#16140f",
+    "texto": "#f1ece3",
+    "suave": "#a39a8a",
+    "destaque": "#d6bd8f",
+    "destaque2": "#b08d57",
+    "marca": "Seu Nome",
+    "fonte_titulo": "Instrument Serif",
+    "fonte_texto": "Inter"
+  },
+
+  "voz": {
+    "provedor": "elevenlabs",
+    "elevenlabs": {
+      "voice_id": "COLOQUE_O_ID_DA_SUA_VOZ",
+      "model_id": "eleven_multilingual_v2",
+      "voice_settings": { "stability": 0.5, "similarity_boost": 0.8, "style": 0.2, "use_speaker_boost": true }
+    },
+    "openai": { "modelo": "gpt-4o-mini-tts", "voz": "alloy", "instrucoes": "Fale em português do Brasil, tom de professor que explica a um colega, ritmo natural." },
+    "velocidade": 1.08,
+    "pausa_entre_partes": 0.35
+  },
+
+  "pronuncia": {
+    "_leia": "palavra escrita → como a voz deve dizer. Ex.: siglas soletradas.",
+    "IA": "iá"
+  },
+
+  "convite": {
+    "titulo": "Gostou da aula?",
+    "texto": "Veja as outras em",
+    "endereco": "seusite.com.br"
+  },
+
+  "trilha": { "arquivo": "", "volume": 0.07 },
+
+  "travas": {
+    "proibidas_na_fala": [],
+    "aceitar": {},
+    "maximo_segundos": 240,
+    "tela_parada_segundos": 2.5,
+    "similaridade_minima": 0.9
+  }
+}

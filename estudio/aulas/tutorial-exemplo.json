@@ -1,0 +1,76 @@
+{
+  "_o_que_e": "Tutorial de exemplo: a gravação de gravar/exemplo.json narrada, com zoom no que importa. Grave antes: node gravar/gravar.mjs gravar/exemplo.json",
+  "titulo": "Pedido na prática",
+  "cabecalho": "Kit de vídeo · Tutorial de exemplo",
+  "destaques": [
+    "contexto",
+    "formato",
+    "confira"
+  ],
+  "partes": [
+    {
+      "fala": "Veja na prática. Primeiro, escreva o pedido com contexto: quem você é e o que quer avisar.",
+      "rotulo": "Passo 1",
+      "tela": {
+        "tipo": "video",
+        "arquivo": "gravacoes/demo-pedido.mp4",
+        "de": 0.6,
+        "legenda": "Escreva com contexto",
+        "zooms": [
+          {
+            "quando": "escreva",
+            "foco": [
+              0.15,
+              0.16,
+              0.85,
+              0.42
+            ],
+            "ate": "avisar"
+          }
+        ]
+      }
+    },
+    {
+      "fala": "Depois, escolha o formato da resposta. Aqui, uma lista curta.",
+      "rotulo": "Passo 2",
+      "tela": {
+        "tipo": "video",
+        "arquivo": "gravacoes/demo-pedido.mp4",
+        "de": 4.6,
+        "legenda": "Escolha o formato",
+        "zooms": [
+          {
+            "quando": "formato",
+            "foco": [
+              0.15,
+              0.24,
+              0.85,
+              0.66
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fala": "Clique em gerar e confira o resultado antes de usar.",
+      "rotulo": "Passo 3",
+      "tela": {
+        "tipo": "video",
+        "arquivo": "gravacoes/demo-pedido.mp4",
+        "de": 6.2,
+        "legenda": "Confira antes de usar",
+        "zooms": [
+          {
+            "quando": "confira",
+            "foco": [
+              0.15,
+              0.5,
+              0.85,
+              0.92
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Assistente de exemplo</title>
+<style>
+  :root { --fundo:#f6f4ef; --tinta:#1d1a15; --suave:#6b6457; --destaque:#b08d57; --caixa:#fff; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; background:var(--fundo); color:var(--tinta); }
+  header { padding:18px 32px; border-bottom:1px solid #e4dfd4; display:flex; align-items:center; gap:10px; font-weight:700; }
+  header span { width:12px; height:12px; border-radius:50%; background:var(--destaque); }
+  main { max-width:860px; margin:36px auto; padding:0 24px; }
+  h1 { font-size:28px; margin:0 0 6px; }
+  p.sub { color:var(--suave); margin:0 0 22px; }
+  .caixa { background:var(--caixa); border:1px solid #e4dfd4; border-radius:14px; padding:20px; box-shadow:0 6px 24px #0000000d; }
+  textarea { width:100%; min-height:110px; border:1px solid #d9d2c3; border-radius:10px; padding:12px; font:inherit; resize:vertical; }
+  .linha { display:flex; gap:12px; align-items:center; margin-top:14px; }
+  select { border:1px solid #d9d2c3; border-radius:10px; padding:10px; font:inherit; background:#fff; }
+  button { margin-left:auto; border:0; border-radius:10px; padding:11px 22px; font:inherit; font-weight:700; background:var(--tinta); color:#fff; cursor:pointer; }
+  #resposta { margin-top:22px; display:none; }
+  #resposta .caixa { border-left:4px solid var(--destaque); white-space:pre-wrap; min-height:120px; }
+</style>
+</head>
+<body>
+<header><span></span> Assistente de exemplo</header>
+<main>
+  <h1>Escreva o seu pedido</h1>
+  <p class="sub">Página de demonstração do kit-video-ia. Nada sai daqui: a resposta é simulada.</p>
+  <div class="caixa">
+    <textarea id="pedido" placeholder="Ex.: Sou dono de uma padaria..."></textarea>
+    <div class="linha">
+      <label for="formato">Formato:</label>
+      <select id="formato">
+        <option value="livre">Livre</option>
+        <option value="lista">Lista curta</option>
+        <option value="email">E-mail</option>
+      </select>
+      <button id="gerar">Gerar</button>
+    </div>
+  </div>
+  <div id="resposta"><div class="caixa" id="texto"></div></div>
+</main>
+<script>
+  const respostas = {
+    livre: "Aqui vai um rascunho pronto para você revisar.",
+    lista: "1. Bom dia! Pão quentinho às 6h.\n2. Encomendas pelo WhatsApp.\n3. Café da manhã completo no sábado.",
+    email: "Assunto: Novidades da semana\n\nOlá! Nesta semana temos pão de fermentação natural todos os dias às 7h. Reserve o seu respondendo este e-mail."
+  };
+  document.getElementById("gerar").addEventListener("click", () => {
+    const alvo = document.getElementById("texto");
+    document.getElementById("resposta").style.display = "block";
+    const texto = respostas[document.getElementById("formato").value];
+    alvo.textContent = "";
+    let i = 0;
+    const passo = () => { alvo.textContent = texto.slice(0, ++i); if (i < texto.length) setTimeout(passo, 18); };
+    passo();
+  });
+</script>
+</body>
+</html>
