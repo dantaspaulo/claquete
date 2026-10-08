@@ -191,4 +191,6 @@ zoom (`"foco": [x0, y0, x1, y1]`) enquadra o que importa e escurece o resto, sem
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:B8995F,100:E2CDA4&height=110&section=footer&animation=twinkling" width="100%" alt="" />
 
+[![Kit Video Ia on AI Agents Listing](https://aiagentslisting.com/kit-video-ia/badge.svg?claim=2dec613dcdf08e9f6c716300b32a84c1)](https://aiagentslisting.com/mcp/kit-video-ia)
+
 </div>
