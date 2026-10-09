@@ -1,176 +1,177 @@
 {
-  "_o_que_e": "Aula de exemplo do kit: três ideias para pedir bem à IA. Copie, troque o texto e rode: python3 scripts/kit.py fazer <id>",
-  "titulo": "Pedidos melhores para a IA",
-  "cabecalho": "Kit de vídeo · Aula de exemplo",
-  "destaques": [
-    "exemplo",
-    "formato",
-    "você",
-    "contexto"
-  ],
-  "partes": [
-    {
-      "fala": "Em menos de dois minutos, você vai aprender a escrever pedidos melhores para a IA. São três ideias simples, e elas mudam o resultado na hora.",
-      "rotulo": "Aula de exemplo",
-      "tela": {
-        "tipo": "capa",
-        "kicker": "Kit de vídeo",
-        "titulo": "Pedidos *melhores* para a IA",
-        "sub": "Três ideias que mudam o resultado na hora.",
-        "chips": [
-          {
-            "texto": "pedidos melhores",
-            "quando": "pedidos"
-          },
-          {
-            "texto": "3 ideias",
-            "quando": "três"
-          },
-          {
-            "texto": "simples",
-            "quando": "simples"
-          },
-          {
-            "texto": "resultado na hora",
-            "quando": "resultado"
-          }
-        ]
+ "_o_que_e": "Aula de exemplo do kit: três ideias para pedir bem à IA. Copie, troque o texto e rode: python3 scripts/kit.py fazer <id>",
+ "titulo": "Pedidos melhores para a IA",
+ "cabecalho": "Claquete · Aula de exemplo",
+ "tipo": "exemplo",
+ "destaques": [
+  "exemplo",
+  "formato",
+  "você",
+  "contexto"
+ ],
+ "partes": [
+  {
+   "fala": "Em menos de dois minutos, você vai aprender a escrever pedidos melhores para a IA. São três ideias simples, e elas mudam o resultado na hora.",
+   "rotulo": "Aula de exemplo",
+   "tela": {
+    "tipo": "capa",
+    "kicker": "Claquete",
+    "titulo": "Pedidos *melhores* para a IA",
+    "sub": "Três ideias que mudam o resultado na hora.",
+    "chips": [
+     {
+      "texto": "pedidos melhores",
+      "quando": "pedidos"
+     },
+     {
+      "texto": "3 ideias",
+      "quando": "três"
+     },
+     {
+      "texto": "simples",
+      "quando": "simples"
+     },
+     {
+      "texto": "resultado na hora",
+      "quando": "resultado"
+     }
+    ]
+   }
+  },
+  {
+   "fala": "Primeiro, diga quem você é e para quem é o texto. Depois, mostre um exemplo do que espera. Por fim, diga o formato da resposta: tamanho, tom e estrutura.",
+   "rotulo": "As três ideias",
+   "tela": {
+    "tipo": "lista",
+    "kicker": "O que dizer",
+    "titulo": "Um bom pedido tem *três partes*",
+    "itens": [
+     {
+      "texto": "Quem você é e para quem é o texto",
+      "quando": "quem"
+     },
+     {
+      "texto": "Um exemplo do que você espera",
+      "quando": "exemplo"
+     },
+     {
+      "texto": "O formato da resposta",
+      "quando": "formato"
+     }
+    ],
+    "chips": [
+     {
+      "texto": "para quem é o texto",
+      "quando": "texto"
+     },
+     {
+      "texto": "o que você espera",
+      "quando": "espera"
+     },
+     {
+      "texto": "tamanho",
+      "quando": "tamanho"
+     },
+     {
+      "texto": "tom",
+      "quando": "tom"
+     },
+     {
+      "texto": "estrutura",
+      "quando": "estrutura"
+     }
+    ]
+   }
+  },
+  {
+   "fala": "Compare. Um pedido vago, como escreva um e-mail, gera um texto genérico. Um pedido completo, com contexto e exemplo, gera um texto pronto para usar.",
+   "rotulo": "Vago e completo",
+   "tela": {
+    "tipo": "colunas",
+    "titulo": "A diferença está no *pedido*",
+    "esquerda": {
+     "titulo": "Vago",
+     "itens": [
+      {
+       "texto": "“escreva um e-mail”",
+       "quando": "escreva"
+      },
+      {
+       "texto": "texto genérico",
+       "quando": "genérico"
       }
+     ]
     },
-    {
-      "fala": "Primeiro, diga quem você é e para quem é o texto. Depois, mostre um exemplo do que espera. Por fim, diga o formato da resposta: tamanho, tom e estrutura.",
-      "rotulo": "As três ideias",
-      "tela": {
-        "tipo": "lista",
-        "kicker": "O que dizer",
-        "titulo": "Um bom pedido tem *três partes*",
-        "itens": [
-          {
-            "texto": "Quem você é e para quem é o texto",
-            "quando": "quem"
-          },
-          {
-            "texto": "Um exemplo do que você espera",
-            "quando": "exemplo"
-          },
-          {
-            "texto": "O formato da resposta",
-            "quando": "formato"
-          }
-        ],
-        "chips": [
-          {
-            "texto": "para quem é o texto",
-            "quando": "texto"
-          },
-          {
-            "texto": "o que você espera",
-            "quando": "espera"
-          },
-          {
-            "texto": "tamanho",
-            "quando": "tamanho"
-          },
-          {
-            "texto": "tom",
-            "quando": "tom"
-          },
-          {
-            "texto": "estrutura",
-            "quando": "estrutura"
-          }
-        ]
+    "direita": {
+     "titulo": "Completo",
+     "itens": [
+      {
+       "texto": "contexto e exemplo",
+       "quando": "contexto"
+      },
+      {
+       "texto": "pronto para usar",
+       "quando": "pronto"
       }
-    },
-    {
-      "fala": "Compare. Um pedido vago, como escreva um e-mail, gera um texto genérico. Um pedido completo, com contexto e exemplo, gera um texto pronto para usar.",
-      "rotulo": "Vago e completo",
-      "tela": {
-        "tipo": "colunas",
-        "titulo": "A diferença está no *pedido*",
-        "esquerda": {
-          "titulo": "Vago",
-          "itens": [
-            {
-              "texto": "“escreva um e-mail”",
-              "quando": "escreva"
-            },
-            {
-              "texto": "texto genérico",
-              "quando": "genérico"
-            }
-          ]
-        },
-        "direita": {
-          "titulo": "Completo",
-          "itens": [
-            {
-              "texto": "contexto e exemplo",
-              "quando": "contexto"
-            },
-            {
-              "texto": "pronto para usar",
-              "quando": "pronto"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "fala": "Para lembrar, são só três ideias: quem você é, um exemplo e o formato. Treine hoje mesmo, com um pedido seu.",
-      "rotulo": "Para lembrar",
-      "tela": {
-        "tipo": "numero",
-        "kicker": "Resumo",
-        "para": "3",
-        "legenda": "ideias para todo pedido",
-        "chips": [
-          {
-            "texto": "quem você é",
-            "quando": "quem"
-          },
-          {
-            "texto": "um exemplo",
-            "quando": "exemplo"
-          },
-          {
-            "texto": "o formato",
-            "quando": "formato"
-          },
-          {
-            "texto": "treine hoje",
-            "quando": "Treine"
-          },
-          {
-            "texto": "com um pedido seu",
-            "quando": "pedido"
-          }
-        ]
-      }
-    },
-    {
-      "fala": "E lembre: a IA ajuda muito, mas quem confere o resultado final é sempre você.",
-      "rotulo": "Antes de usar",
-      "tela": {
-        "tipo": "frase",
-        "kicker": "Regra de ouro",
-        "titulo": "Quem confere é *você*",
-        "sub": "A IA ajuda. A revisão é sua.",
-        "chips": [
-          {
-            "texto": "a IA ajuda",
-            "quando": "ajuda"
-          },
-          {
-            "texto": "revisão final",
-            "quando": "confere"
-          },
-          {
-            "texto": "sempre você",
-            "quando": "sempre"
-          }
-        ]
-      }
+     ]
     }
-  ]
+   }
+  },
+  {
+   "fala": "Para lembrar, são só três ideias: quem você é, um exemplo e o formato. Treine hoje mesmo, com um pedido seu.",
+   "rotulo": "Para lembrar",
+   "tela": {
+    "tipo": "numero",
+    "kicker": "Resumo",
+    "para": "3",
+    "legenda": "ideias para todo pedido",
+    "chips": [
+     {
+      "texto": "quem você é",
+      "quando": "quem"
+     },
+     {
+      "texto": "um exemplo",
+      "quando": "exemplo"
+     },
+     {
+      "texto": "o formato",
+      "quando": "formato"
+     },
+     {
+      "texto": "treine hoje",
+      "quando": "Treine"
+     },
+     {
+      "texto": "com um pedido seu",
+      "quando": "pedido"
+     }
+    ]
+   }
+  },
+  {
+   "fala": "E lembre: a IA ajuda muito, mas quem confere o resultado final é sempre você.",
+   "rotulo": "Antes de usar",
+   "tela": {
+    "tipo": "frase",
+    "kicker": "Regra de ouro",
+    "titulo": "Quem confere é *você*",
+    "sub": "A IA ajuda. A revisão é sua.",
+    "chips": [
+     {
+      "texto": "a IA ajuda",
+      "quando": "ajuda"
+     },
+     {
+      "texto": "revisão final",
+      "quando": "confere"
+     },
+     {
+      "texto": "sempre você",
+      "quando": "sempre"
+     }
+    ]
+   }
+  }
+ ]
 }

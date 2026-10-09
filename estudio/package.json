@@ -1,7 +1,7 @@
 {
   "name": "estudio-video",
   "private": true,
-  "description": "Estúdio do kit-video-ia: aulas narradas animadas e tutoriais de tela (Remotion 4).",
+  "description": "Estúdio da Claquete.ai: aulas narradas animadas, demonstrações de ferramenta e dicas (Remotion 4).",
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",

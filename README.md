@@ -2,102 +2,121 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F1114,100:153626&height=210&section=header&text=Claquete.ai&fontColor=FFFFFF&fontSize=58&fontAlignY=36&desc=o%20est%C3%BAdio%20de%20v%C3%ADdeo%20que%20o%20Claude%20opera&descAlignY=58&descSize=18" width="100%" alt="Claquete.ai" />
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&pause=1300&color=2EE59D&center=true&vCenter=true&width=760&lines=Demonstra%C3%A7%C3%A3o+de+ferramenta;Aula+animada%2C+sem+mostrar+tela;Avatar%2C+an%C3%BAncio+e+carrossel+para+redes;Edi%C3%A7%C3%A3o+da+sua+grava%C3%A7%C3%A3o;Nada+parado+mais+de+2%2C5+s" alt="O que o Claquete faz" />
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&pause=1300&color=2EE59D&center=true&vCenter=true&width=760&lines=Demonstra%C3%A7%C3%A3o+e+trilha+de+uma+ferramenta;Aula+animada+de+2+a+5+minutos;Avatar%2C+an%C3%BAncio+e+corte+viral;Vinheta+de+marca+em+motion+design;O+Claude+roteiriza%2C+grava%2C+edita+e+revisa" alt="O que o Claquete faz" />
 
 <br/>
 
 <a href="#-instalar"><img src="https://img.shields.io/badge/npx%20github%3Adantaspaulo%2Fclaquete-2EE59D?style=for-the-badge&logo=npm&logoColor=0F1114" alt="Instalar" /></a>
-<a href="#-quatro-tipos-de-v%C3%ADdeo"><img src="https://img.shields.io/badge/Ver%20exemplos-0F1114?style=for-the-badge&logo=youtube&logoColor=2EE59D" alt="Ver exemplos" /></a>
-<a href="CHANGELOG.md"><img src="https://img.shields.io/badge/vers%C3%A3o-1.2.0-0F1114?style=for-the-badge" alt="Versão 1.2.0" /></a>
+<a href="#-tipos-de-v%C3%ADdeo"><img src="https://img.shields.io/badge/Ver%20exemplos-0F1114?style=for-the-badge&logo=youtube&logoColor=2EE59D" alt="Ver exemplos" /></a>
+<a href="CHANGELOG.md"><img src="https://img.shields.io/badge/vers%C3%A3o-2.0.0-0F1114?style=for-the-badge" alt="Versão 2.0.0" /></a>
 <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-0F1114?style=for-the-badge" alt="Licença MIT" />
 
 <br/><br/>
 
 **Claquete.ai** (antes `kit-video-ia`) é o método com que são feitas as aulas, os tutoriais e os vídeos de redes do ChatADV.<br/>
-Você pede ao Claude; ele escreve o roteiro, grava a tela, narra com voz de IA, edita e confere.<br/>
-Travas recusam fala trocada, tela parada e texto proibido na gravação.
+Você escolhe o tipo de vídeo; o Claude escreve o roteiro e o plano de edição, grava a tela, narra, edita e revisa.<br/>
+Você decide em dois pontos, e travas recusam roteiro sem ok, fala sem revisão e tela parada.
 
 </div>
 
 <br/>
 
-## 🎬 Quatro tipos de vídeo
+## 🎬 Tipos de vídeo
 
-| | Tipo | Para quê | Na Claquete |
-|---|---|---|---|
-| 🖥️ | [**Demonstração de ferramenta**](#%EF%B8%8F-demonstra%C3%A7%C3%A3o-de-ferramenta) | a IA opera o computador, monta o roteiro de uso, grava, narra e aproxima no que importa (a trilha completa de aulas chega na 2.0) | ✅ hoje (`tutorial-de-tela`) |
-| 🎓 | [**Aula animada**](#-aula-animada) | aula didática e dinâmica, sem mostrar ferramenta: cenas ilustradas no tempo da fala | ✅ hoje (`aula-animada`) |
-| 📱 | [**Redes: avatar, anúncio e carrossel**](#-redes-avatar-an%C3%BAncio-e-carrossel) | Instagram e TikTok: apresentador gerado por IA, vídeo em pé de anúncio, carrossel e imagem 4:5 | 🔜 versão 2.0 |
-| ✂️ | [**Editar gravação**](#%EF%B8%8F-editar-grava%C3%A7%C3%A3o) | edita no seu computador o que você gravou: Screen Studio, Recordly ou qualquer vídeo | 🔜 versão 2.0 |
+Você escolhe o tipo quando começa um projeto novo. O Claude pergunta a duração (as aulas têm de 2 a 5 minutos, à sua
+escolha), o público e o formato: deitado, em pé ou os dois.
 
-<sub>Todos os exemplos abaixo foram feitos com este método no <b>ChatADV</b>, uma IA para advogados. Clique na imagem para ver o vídeo com som.</sub>
+| | Tipo | Para quê | Duração | Versão |
+|---|---|---|---|---|
+| | **Ensinar** | | | |
+| 🖥️ | Demonstração de ferramenta | passo a passo de uma tarefa, com a IA operando o computador | 1 a 4 min | ✅ |
+| 🧭 | Trilha de uma ferramenta | um curso: uma aula por recurso, na ordem em que se aprende a usar | aulas de 2 a 5 min | ✅ |
+| 📂 | Caso completo | um caso do começo ao fim, em série, com a ferramenta trabalhando de verdade | aulas de 2 a 5 min | ✅ |
+| 🎓 | Aula animada | aula didática e dinâmica, sem mostrar ferramenta | 2 a 5 min | ✅ |
+| 💡 | Dica rápida | um recurso só, direto ao ponto | 30 a 90 s | ✅ |
+| 📲 | Instrução no celular | passo a passo no celular, com as telas do sistema desenhadas | até 1 min | 🔜 2.2 |
+| | **Redes e vendas** | | | |
+| 🧑‍💼 | Avatar apresentador | pessoa gerada por IA apresentando o seu produto ou serviço | 15 a 40 s | 🔜 2.1 |
+| 📣 | Anúncio demonstrativo | em pé, sem pessoa: gancho, a ferramenta trabalhando e o diferencial | 20 a 35 s | 🔜 2.1 |
+| ✂️ | Corte viral | uma gravação longa vira vários Reels, com legenda palavra a palavra | 15 a 45 s | 🔜 2.1 |
+| 🖼️ | Carrossel e imagem | peças de feed 4:5 tiradas do mesmo material | · | 🔜 2.1 |
+| | **Marca** | | | |
+| ✨ | Vinheta de marca | logo animado, abertura e encerramento, tipografia cinética e fundos animados | 3 a 10 s | 🔜 2.1 |
+| 🌐 | Vídeo para página | versão leve para site ou central de ajuda, com pôster e legenda | · | ✅ |
+
+<sub>Os exemplos abaixo foram feitos com este método no <b>ChatADV</b>, uma IA para advogados. Clique na imagem para ver o vídeo com som.</sub>
 
 <br/>
 
-### 🖥️ Demonstração de ferramenta
+### 🎓 Ensinar
 
 <div align="center">
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-tutorial.mp4"><img src="docs/exemplos/demo-tutorial.webp" width="62%" alt="Tutorial: apelação na IA do ChatADV, deitado" /></a>
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-tutorial-em-pe.mp4"><img src="docs/exemplos/demo-tutorial-em-pe.webp" width="20%" alt="O mesmo tutorial, em pé" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-tutorial.mp4"><img src="docs/exemplos/demo-tutorial.webp" width="62%" alt="Demonstração de ferramenta: apelação na IA do ChatADV, deitado" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-tutorial-em-pe.mp4"><img src="docs/exemplos/demo-tutorial-em-pe.webp" width="20%" alt="A mesma demonstração, em pé" /></a>
 <br/>
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-caso.mp4"><img src="docs/exemplos/demo-caso.webp" width="62%" alt="Um caso do começo ao fim, aula 6: gravação real da IA com cenas animadas" /></a>
+<sub><b>Demonstração de ferramenta</b>: o tutorial da apelação, deitado e em pé, saídos da mesma gravação.</sub>
+<br/><br/>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-demo-caso.mp4"><img src="docs/exemplos/demo-caso.webp" width="62%" alt="Caso completo: aula 6 de Um caso do começo ao fim" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v2.0.0/claquete-celular-instalar.mp4"><img src="docs/exemplos/celular-instalar.webp" width="20%" alt="Instrução no celular: instalar o app" /></a>
 <br/>
-<sub>Em cima, o tutorial da apelação, deitado e em pé, saídos da mesma gravação. Embaixo, a aula 6 de
-<a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/caso-plano-de-saude-1">Um caso do começo ao fim</a>: a IA trabalhando de verdade, com cortes, zoom e cenas animadas entre os passos.</sub>
+<sub><b>Caso completo</b>: aula 6 de <a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/caso-plano-de-saude-1">Um caso do começo ao fim</a>, a IA trabalhando de verdade, com cortes, zoom e cenas animadas entre os passos.
+<b>Instrução no celular</b> (tipo da versão 2.2): instalar o app na tela inicial, com as telas do sistema desenhadas.</sub>
+<br/><br/>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada.mp4"><img src="docs/exemplos/aula-animada.webp" width="49%" alt="Aula animada: Introdução à IA Jurídica, aula 1" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada-2.mp4"><img src="docs/exemplos/aula-animada-2.webp" width="49%" alt="Aula animada: Introdução à IA Jurídica, aula 3" /></a>
+<br/>
+<sub><b>Aula animada</b>: aulas 1 e 3 da série <a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/ia-juridica-intro-1">Introdução à IA Jurídica</a>. Cada elemento entra no segundo em que a voz diz a palavra, e a câmera aproxima sem cortar texto.</sub>
 </div>
-
-O Claude abre o sistema num navegador próprio, faz o caminho com dado de teste (cursor visível, texto proibido
-descarta a gravação), acelera o trecho parado, aproxima no que importa e narra por cima. Na versão 2.0
-ele também planeja uma **trilha** inteira: uma aula por recurso da ferramenta, na ordem em que alguém aprende a usar.
 
 > grava um tutorial de como cadastrar um cliente no meu sistema, deitado e em pé, sem mostrar dado real
 
+> faz uma aula animada de 3 minutos sobre como escrever um bom e-mail de cobrança
+
 <br/>
 
-### 🎓 Aula animada
+### 📱 Redes e vendas
 
 <div align="center">
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada.mp4"><img src="docs/exemplos/aula-animada.webp" width="49%" alt="Introdução à IA Jurídica, aula 1" /></a>
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada-2.mp4"><img src="docs/exemplos/aula-animada-2.webp" width="49%" alt="Introdução à IA Jurídica, aula 3" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-redes-avatar.mp4"><img src="docs/exemplos/redes-avatar.webp" width="19%" alt="Avatar apresentador" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-redes-anuncio.mp4"><img src="docs/exemplos/redes-anuncio.webp" width="19%" alt="Anúncio demonstrativo em pé" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v2.0.0/claquete-redes-viral.mp4"><img src="docs/exemplos/redes-viral.webp" width="19%" alt="Corte viral narrado" /></a>
+<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-editar-corte.mp4"><img src="docs/exemplos/editar-corte.webp" width="19%" alt="Corte em pé de uma gravação do Screen Studio" /></a>
+<img src="docs/exemplos/redes-carrossel.webp" width="20%" alt="Carrossel 4:5" />
 <br/>
-<sub>Aulas 1 e 3 da série <a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/ia-juridica-intro-1">Introdução à IA Jurídica</a>, no ar na Central de Ajuda do ChatADV.</sub>
+<sub><b>Avatar apresentador</b>, <b>anúncio demonstrativo</b>, dois <b>cortes virais</b> (um narrado, outro tirado de uma gravação do Screen Studio) e um <b>carrossel</b>. Feitos com o método no ChatADV; estes tipos entram no kit na versão 2.1.</sub>
 </div>
 
-Aula de conceito, sem gravar tela: cada parte da fala ganha uma cena, e cada elemento entra no segundo em que a
-voz diz a palavra. A câmera aproxima sem cortar texto, e nada fica parado mais de 2,5 s.
-
-> faz uma aula narrada animada de 2 minutos sobre como escrever um bom e-mail de cobrança
-
-<br/>
-
-### 📱 Redes: avatar, anúncio e carrossel
-
-<div align="center">
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-redes-avatar.mp4"><img src="docs/exemplos/redes-avatar.webp" width="24%" alt="Avatar apresentadora gerada por IA" /></a>
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-redes-anuncio.mp4"><img src="docs/exemplos/redes-anuncio.webp" width="24%" alt="Vídeo em pé de anúncio, sem pessoa" /></a>
-<img src="docs/exemplos/redes-carrossel.webp" width="27%" alt="Carrossel 4:5 de 9 telas" />
-<br/>
-<sub>Apresentadora gerada por IA falando da ferramenta; anúncio em pé com gancho nos 2 primeiros segundos; carrossel 4:5.</sub>
-</div>
-
-Vídeos para Instagram e TikTok, de campanha ou para alcance. O avatar é trocável: **Higgsfield** como principal
-(a pessoa e a voz saem juntas do gerador) e **HeyGen** como alternativa (o avatar fala sobre a voz da ElevenLabs,
-igual em todo vídeo). O avatar é apresentador, nunca depoimento de cliente. Chega na versão 2.0.
+Chegam na versão 2.1. O avatar é trocável: **Higgsfield** como principal (a pessoa e a voz saem juntas do gerador) e
+**HeyGen** como alternativa (o avatar fala sobre a voz da ElevenLabs, igual em todo vídeo). O avatar é apresentador,
+nunca depoimento de cliente. O gancho fala do ganho de quem assiste, nos 2 primeiros segundos.
 
 <br/>
 
-### ✂️ Editar gravação
+### ✨ Marca
 
-<div align="center">
-<a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-editar-corte.mp4"><img src="docs/exemplos/editar-corte.webp" width="24%" alt="Corte em pé tirado de uma gravação do Screen Studio" /></a>
+As [skills de motion design da iart.ai](https://github.com/iart-ai/motion-design-skills) (MIT) já são instaladas junto
+e entram nos outros tipos: direção de arte, ritmo e composição nas aulas animadas, a paleta da sua marca, e corte no
+tempo da música nos vídeos curtos. A vinheta de marca (logo animado, abertura e encerramento) vira um tipo próprio,
+com modelo pronto no estúdio, na versão 2.1.
+
 <br/>
-<sub>Corte em pé tirado de uma demonstração gravada no Screen Studio: esperas e muletas fora, legenda palavra a palavra.</sub>
-</div>
 
-Você grava do seu jeito e o Claude edita no seu computador: no **Screen Studio** (corta esperas, muletas,
-repetições e pausas longas direto no projeto, sempre numa cópia, e esconde dado sensível), no **Recordly**
-(gravador de código aberto, com zoom e cursor suave) ou em qualquer vídeo (OBS, Loom, celular), com legenda, a
-sua marca e a versão em pé. Chega na versão 2.0.
+## 🤖 Como o Claude trabalha
+
+Editar não é um tipo de vídeo: é o jeito de trabalhar. O Claude orquestra sozinho as skills, as ferramentas do seu
+computador, a voz e a revisão, e só para nos dois pontos em que a decisão é sua.
+
+1. **Entende o pedido** e pergunta o que falta: tipo, duração, público, formato.
+2. **Roteiro e plano de edição, para você aprovar.** A fala de cada parte e o que aparece na tela. Na demonstração,
+   também o caminho na ferramenta, os cortes, as acelerações e os zooms. Nada é gravado nem narrado antes do seu ok.
+3. **Executa:** opera o computador, grava, narra com a ElevenLabs, monta e edita.
+4. **Revisa com subagentes:** fala, pronúncia e sotaque de cada parte, roteiro, texto na tela, ritmo (nada parado
+   mais de 2,5 s), zoom e dado sensível.
+5. **Corrige** o que reprovou e confere de novo, sem você pedir.
+6. **Entrega para a sua aprovação.** Aprovado, o vídeo vai para a pasta que você escolher e a montagem é apagada.
+
+<sub>Os dois portões são travas do estúdio, não combinados: o <code>narrar</code> recusa roteiro sem ok (ou mudado depois do
+ok) e o <code>montar</code> recusa fala sem revisão. Editar gravações suas (Screen Studio, Recordly, qualquer vídeo) chega na 2.2.</sub>
 
 <br/>
 
@@ -107,21 +126,24 @@ sua marca e a versão em pé. Chega na versão 2.0.
 npx github:dantaspaulo/claquete
 ```
 
-O comando antigo, `npx github:dantaspaulo/kit-video-ia`, continua funcionando.
+Já usa a versão 1? `npx github:dantaspaulo/claquete --atualizar` atualiza skills e estúdio e mantém os seus roteiros,
+gravações, marca, chaves e configuração.
 
 | | O que o instalador faz |
 |---|---|
-| **1. Skills** | copia as skills para o Claude (para você, ou só para o projeto atual) |
-| **2. Estúdio** | cria a pasta `estudio-video/` com o projeto pronto para renderizar |
-| **3. Ferramentas** | instala **Remotion**, React e **Playwright**, baixa os navegadores que eles usam e instala **ffmpeg** e **Python 3** se faltarem (com `--sem-ferramentas`, só confere) |
-| **4. Chaves e voz** | pede as chaves sem mostrar na tela, guarda num `.env` só seu, põe a **voz Raquel** na sua conta da ElevenLabs e gera um áudio de teste |
-| **5. Teste** | valida a aula de exemplo e confere que o Remotion monta o projeto |
+| **1. Skills** | copia as skills da Claquete e as de motion design da iart.ai (para você, ou só para o projeto atual) |
+| **2. Estúdio** | cria a pasta `estudio-video/` com o projeto que monta os vídeos (ou atualiza a que já existe) |
+| **3. Ferramentas** | instala Remotion, React e Playwright, baixa os navegadores, instala ffmpeg e Python 3 se faltarem e, se você quiser, a transcrição local e gratuita da fala (faster-whisper, num ambiente só do estúdio) |
+| **4. Voz** | pede a chave da ElevenLabs sem mostrar na tela, guarda num `.env` só seu, põe a voz Raquel na sua conta e gera um áudio de teste |
+| **5. Sua marca** | um questionário: nome, público, site, Instagram, TikTok, cores, fontes, logo, estilo de movimento, tom, palavras proibidas, glossário da sua área, voz e a chamada do fim. Aceita também uma **pasta, um HTML, um `.md` ou um link** com o padrão da marca, que o Claude lê depois |
+| **6. Teste** | valida o vídeo de exemplo e confere que o Remotion monta o projeto |
 
-**Chaves, hoje:** ElevenLabs (a voz) e OpenAI (a conferência da fala). **Na versão 2.0 a OpenAI sai:** quem confere
-a fala, a pronúncia e o sotaque é a própria sessão do Claude, com subagentes, e a única chave passa a ser a da ElevenLabs.
+**Uma chave só:** a da ElevenLabs. Nenhuma outra API: quem revisa a fala é a própria sessão do Claude, com subagentes.
 
-Sem perguntas: `--tudo`. Outras opções: `--projeto`, `--skills aula-animada,tutorial-de-tela`, `--estudio ./minha-pasta`,
-`--sem-ferramentas`, `--desinstalar`. Instalar não apaga nada: skill que já existe vira cópia de segurança. O `--desinstalar` remove as skills e deixa o estúdio.
+Sem perguntas: `--tudo`. Outras opções: `--atualizar`, `--projeto`, `--global`, `--skills claquete,aula-animada`,
+`--estudio ./minha-pasta`, `--sem-ferramentas`, `--sem-motion`, `--sem-marca`, `--transcricao-local`, `--desinstalar`,
+`--versao`. Instalar não apaga nada: skill que já existe vira cópia de segurança. O `--desinstalar` remove as skills e
+deixa o estúdio.
 
 **Precisa ter antes:** Node 18+ (o resto o instalador resolve). macOS, Linux ou Windows; no macOS, o ffmpeg vem pelo
 [Homebrew](https://brew.sh).
@@ -130,47 +152,44 @@ Sem perguntas: `--tudo`. Outras opções: `--projeto`, `--skills aula-animada,tu
 
 ## 🧑‍💻 No dia a dia
 
-Abra o Claude na pasta do estúdio e peça em português, como pediria a uma pessoa. O Claude pergunta o que falta
-(assunto, público, duração, formato), escreve o roteiro, mostra antes de gastar com voz e só entrega o que passou
-nas travas.
+Abra o Claude na pasta do estúdio e diga **"quero fazer um vídeo"**. Ele pergunta o tipo, a duração (nas aulas, de 2 a 5
+minutos, à sua escolha), o público e o formato, lê a sua marca e conduz o resto.
 
+- **Você decide em dois pontos:** o roteiro com o plano de edição, antes de gravar e narrar; e o vídeo pronto, antes de
+  publicar. Entre um e outro, o Claude trabalha sozinho e corrige o que a revisão reprovar.
 - **A IA opera o computador.** Na demonstração ela abre um navegador próprio, clica, digita e grava. Deixe a máquina
   livre durante a gravação: não mexa no mouse nessa janela e feche o que for pesado.
-- **Memória e disco.** Gravar e renderizar usam bastante memória, e a montagem de cada vídeo ocupa centenas de MB
-  até você apagá-la. Deixe uns 10 GB livres. Na versão 2.0, o estúdio para de gravar sozinho com menos de 5 GB livres
-  e, depois que você aprova, só o vídeo final fica.
-- **Você aprova.** Roteiro antes da voz, e o vídeo pronto antes de publicar. Só o seu ouvido julga a voz.
-
-<br/>
-
-## 🎨 Personalização (versão 2.0)
-
-Na instalação, um questionário monta o perfil da sua marca, e todos os vídeos saem com ele: nome, público, site,
-design system (ou cores, fontes, logo e fundo), Instagram e TikTok, chamada padrão, tom de voz, voz da ElevenLabs,
-palavras proibidas e o glossário da sua área. Você também pode **entregar uma pasta, um HTML ou um arquivo `.md`**
-com o padrão da marca, os logos e exemplos: o Claude lê tudo, monta o perfil e mostra uma amostra no seu visual para
-aprovar. Para mudar depois, é só pedir "refaz a minha marca".
+- **Memória e disco.** Gravar e renderizar usam bastante memória, e a montagem de cada vídeo ocupa centenas de MB até a
+  entrega. Deixe uns 10 GB livres: o `renderizar` recusa sozinho com menos de 5 GB, e o `validar` e o `plano` avisam.
+- **Só o vídeo final fica.** Aprovado, `entregar` copia o vídeo e as legendas para a sua pasta e apaga a montagem.
+- **Material da marca depois:** diga "configura minha marca" e o Claude lê a pasta, o HTML ou o `.md` que você deu,
+  completa a marca e mostra uma amostra no seu visual.
 
 <br/>
 
 ## 🧭 Como funciona
 
-Tudo sai de um arquivo, `aulas/<id>.json`: a fala de cada parte e a tela que vai com ela.
+Tudo sai de um arquivo, `aulas/<id>.json`: o tipo, a duração escolhida, a fala de cada parte e a tela que vai com ela.
 
-```bash
-python3 scripts/kit.py fazer <id> --formatos h,v
-```
-
-| Etapa | O que faz | O que recusa |
+| Comando | O que faz | O que recusa |
 |---|---|---|
-| `validar` | confere o arquivo, de graça | travessão, palavra proibida, lista longa, zoom sem foco válido |
-| `narrar` | gera a voz de cada parte com o tempo de cada palavra | · |
-| `conferir` | transcreve a voz e compara com o roteiro; no `fazer`, narra de novo o que errou, até 2 vezes | fala que não bate com o texto |
-| `montar` | calcula quando cada elemento entra e gera o projeto do Remotion | palavra de `quando` que a fala não tem; **mais de 2,5 s sem nada novo**; aula acima de 4 min |
-| `renderizar` | renderiza deitado (1920×1080) e/ou em pé (1080×1920) | · |
+| `novo <id> --tipo aula --minutos 3` | cria o arquivo com o tipo e a duração | aula, caso ou trilha sem a duração de 2 a 5 min |
+| `validar` | confere o arquivo, de graça | travessão, palavra proibida, lista longa, zoom sem foco válido, fonte fora do Google Fonts; avisa duração fora do alvo, gravação que ainda não existe e disco com menos de 5 GB livres |
+| `plano` | escreve o roteiro e o plano de edição num documento só, com o caminho na ferramenta (`caminho`) e o que será gravado depois do ok | · |
+| `aprovar` | **portão 1**: registra o ok da pessoa (o `de` das gravações fica fora dele) | arquivo com erro |
+| `narrar` | gera a voz de cada parte, com o tempo de cada palavra | roteiro sem ok, ou mudado depois do ok |
+| `conferir` | **portão 2**: relatório da fala para a revisão (com transcrição local, se instalada); `--aprovado` libera | narração que mudou depois do relatório; parte que a transcrição local reprovou |
+| `montar` | calcula quando cada elemento entra e gera o projeto do Remotion, sempre com os dois formatos | fala sem revisão; gravação ou imagem que não existe; **mais de 2,5 s sem nada novo**; duração fora do tipo ou da escolha |
+| `renderizar` | renderiza deitado (1920×1080) e/ou em pé (1080×1920), conforme `--formatos` (padrão `h`) | menos de 5 GB livres no disco |
 | `finalizar` | som em -14 LUFS, legendas `.vtt` e `.srt`, folha de quadros | **tela parada** medida no vídeo pronto |
+| `entregar <id> --destino <pasta>` | copia o vídeo final, confere a cópia e apaga a montagem | cópia que não bate de tamanho |
 
-`finalizar --pagina` também gera as versões leves (H.264, AV1 e pôster) para pôr numa página.
+`fazer <id>` roda tudo na ordem e para nos portões (código 2). `--formatos h`, `v` ou `h,v` vale para `renderizar`,
+`finalizar` e `fazer`. `finalizar --pagina` também gera as versões leves (H.264, AV1 com `+faststart` e pôster) para
+pôr numa página, e roda de novo sobre um vídeo já finalizado; sem render nenhum, ele para com "não há render".
+
+Para provar que as travas do seu estúdio estão de pé: `python3 scripts/teste.py` (grátis, a voz é um tom gerado na
+hora). Ele tenta passar por cada portão sem o ok e falha se algum deixar.
 
 <br/>
 
@@ -178,13 +197,12 @@ python3 scripts/kit.py fazer <id> --formatos h,v
 
 | Skill | Para quê |
 |---|---|
-| **tutorial-de-tela** | demonstração de ferramenta: grava o sistema com o Playwright (cursor visível, dado borrado, texto proibido descarta a gravação) e narra por cima, com zoom e holofote |
-| **aula-animada** | aula de conceito: o Claude pergunta o que falta, escreve o roteiro em partes (uma ideia por tela), monta o arquivo e roda o estúdio |
+| **claquete** | a porta de entrada: pergunta o tipo, a duração e o formato, lê a marca e conduz o fluxo com os dois portões |
+| **claquete-marca** | lê o material da marca (pasta, HTML, `.md`, link), completa a marca e mostra uma amostra para aprovar |
+| **aula-animada** | aula didática de 2 a 5 minutos, sem mostrar ferramenta, com cenas no tempo da fala |
+| **tutorial-de-tela** | demonstração de ferramenta, dica, caso completo e trilha: roteiro de uso, plano de edição, gravação com o Playwright (cursor visível, dado borrado, texto proibido descarta a gravação) e narração com zoom e destaque |
 | **video-na-pagina** | publica o vídeo leve numa página ou central de ajuda: as versões, o pôster, a legenda e o HTML certo |
-
-Na versão 2.0: uma porta de entrada que pergunta qual dos quatro tipos você quer, as skills de redes e de edição,
-a de marca, e as [skills de motion design da iart.ai](https://github.com/iart-ai/motion-design-skills) (MIT) para
-direção de arte, ritmo, composição e cor.
+| **motion design** (iart.ai) | `animation-principles`, `motion-art-direction`, `shot-composition`, `color-motion`, `motion-background`, `logo-animation`, `beat-sync-editing`, `remotion-video` e `after-effects`, instaladas junto (MIT) |
 
 ### Telas prontas
 
@@ -215,9 +233,11 @@ zoom (`"foco": [x0, y0, x1, y1]`) enquadra o que importa e escurece o resto, sem
 ## 💰 Custos e licenças
 
 - **Voz:** ElevenLabs, paga por uso. Uma aula de 2 minutos é o TTS de uns 2 mil caracteres.
-- **Avatar (versão 2.0):** pago ao provedor que você escolher. Na Higgsfield (Wan 3.0, 720p), uma tomada de 25 s custou US$ 2,00 a 2,60.
+- **Revisão da fala:** de graça. Quem revisa é a sessão do Claude; a transcrição, se instalada, roda na sua máquina.
+- **Avatar (versão 2.1):** pago ao provedor que você escolher. Na Higgsfield (Wan 3.0, 720p), uma tomada de 25 s custou US$ 2,00 a 2,60.
 - **Remotion** (o renderizador): grátis para pessoas e empresas de até 3 pessoas; acima disso, [licença de empresa](https://www.remotion.dev/license).
-- **Fontes:** Inter e Instrument Serif (licença OFL). **Playwright:** Apache 2.0.
+- **Fontes:** as da sua marca vêm do Google Fonts (quase todas OFL; confira a da sua); as do estúdio, Inter e Instrument
+  Serif, são OFL. **Playwright:** Apache 2.0.
 - **Claquete.ai:** MIT. Use, adapte e compartilhe. Versões e mudanças no [CHANGELOG](CHANGELOG.md).
 
 <br/>

@@ -1,7 +1,7 @@
 ---
 name: video-na-pagina
 description: >-
-  Prepara um vídeo do kit-video-ia (ou qualquer MP4) para publicar em landing page, site, blog ou
+  Prepara um vídeo da Claquete.ai (ou qualquer MP4) para publicar em landing page, site, blog ou
   central de ajuda: versões leves H.264 e AV1, pôster, legenda .vtt, o HTML do player certo para cada
   uso (hero sem som em laço ou aula com controles), carregamento que não pesa a página e
   acessibilidade. Use quando a pessoa pedir "colocar o vídeo no site", "vídeo na landing page", "vídeo
@@ -15,23 +15,32 @@ metadata:
 
 ## Gerar as versões
 
-Vídeo do estúdio:
+Vídeo do estúdio, **antes do `entregar`** (ele apaga a montagem):
 ```bash
 cd estudio-video
+python3 scripts/kit.py fazer <id> --formatos h --pagina
+```
+Use o mesmo `--formatos` do vídeo (`h`, `v` ou `h,v`). O `finalizar --pagina` roda também sobre um
+vídeo já finalizado (sem o arquivo bruto do render, e sem normalizar o som outra vez), então basta:
+```bash
 python3 scripts/kit.py finalizar <id> --formatos h --pagina
 ```
+Se não há render nenhum, ele para com "não há render": aí `renderizar <id> --formatos h` antes. O
+`fazer ... --pagina` também serve, mas renderiza de novo (a voz não é gerada de novo).
 Sai em `saida/<id>/`: `<id>-h-pagina.mp4` (H.264, compatível com tudo), `<id>-h-pagina-av1.mp4`
-(AV1, ~25% menor, se o ffmpeg tiver `libsvtav1`), o pôster (`.webp` ou `.jpg`) e `<id>.vtt`.
+(AV1, ~25% menor, se o ffmpeg tiver `libsvtav1`), o pôster `<id>-h-pagina-poster.webp` (ou `.jpg`,
+se o ffmpeg não tiver `libwebp`) e `<id>.vtt`. O `entregar` leva todos para a pasta de destino.
 
-Outro MP4 qualquer:
+Vídeo já entregue, ou outro MP4 qualquer:
 ```bash
 ffmpeg -i entrada.mp4 -c:v libx264 -preset slow -crf 28 -c:a aac -b:a 96k -movflags +faststart saida.mp4
-ffmpeg -i entrada.mp4 -c:v libsvtav1 -preset 6 -crf 42 -c:a libopus -b:a 80k saida-av1.mp4
+ffmpeg -i entrada.mp4 -c:v libsvtav1 -preset 6 -crf 42 -c:a libopus -b:a 80k -movflags +faststart saida-av1.mp4
 ffmpeg -ss 1 -i entrada.mp4 -frames:v 1 poster.jpg
 ```
 
 Meta de peso: até ~2 MB por minuto na versão H.264 de página. `-movflags +faststart` sempre (o
-vídeo começa a tocar antes de baixar inteiro).
+vídeo começa a tocar antes de baixar inteiro): as versões H.264 e AV1 do `finalizar --pagina` e dos
+comandos acima já saem com ele.
 
 ## O HTML
 

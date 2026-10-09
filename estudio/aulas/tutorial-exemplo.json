@@ -1,7 +1,14 @@
 {
   "_o_que_e": "Tutorial de exemplo: a gravação de gravar/exemplo.json narrada, com zoom no que importa. Grave antes: node gravar/gravar.mjs gravar/exemplo.json",
   "titulo": "Pedido na prática",
-  "cabecalho": "Kit de vídeo · Tutorial de exemplo",
+  "cabecalho": "Claquete · Tutorial de exemplo",
+  "tipo": "exemplo",
+  "caminho": [
+    "Abrir a página de demonstração",
+    "Escrever o pedido com contexto no campo de texto",
+    "Escolher o formato \"lista curta\"",
+    "Clicar em Gerar e esperar o resultado aparecer"
+  ],
   "destaques": [
     "contexto",
     "formato",

@@ -40,6 +40,7 @@ export type Tema = {
   fonte_titulo: string;
   fonte_texto: string;
   fundo_imagem?: string;
+  logo?: string;
 };
 
 export type Plano = {

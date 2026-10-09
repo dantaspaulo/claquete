@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import "./fontes";
 import { pilha } from "./fontes";
 import { Cena } from "./cenas/Cenas";
@@ -19,6 +19,7 @@ const Encerramento: React.FC<{ plano: Plano }> = ({ plano }) => {
   );
   return (
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", textAlign: "center", gap: 22 }}>
+      {tema.logo ? linha(0, <Img src={staticFile(tema.logo)} style={{ height: 120, objectFit: "contain" }} />, {}) : null}
       {linha(0.1, plano.convite.titulo, { fontFamily: pilha(tema.fonte_titulo), fontSize: 96, color: tema.texto })}
       {linha(0.5, plano.convite.texto, { fontFamily: pilha(tema.fonte_texto), fontSize: 40, color: tema.suave })}
       {linha(0.9, plano.convite.endereco, {

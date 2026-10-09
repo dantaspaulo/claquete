@@ -1,7 +1,7 @@
 {
   "name": "claquete",
-  "version": "1.2.0",
-  "description": "Claquete.ai: skills para o Claude e um estúdio aberto para gravar aulas narradas animadas, demonstrações de ferramenta e vídeos para redes, com voz por IA e conferência automática.",
+  "version": "2.0.0",
+  "description": "Claquete.ai: o estúdio de vídeo que o Claude opera. Aulas animadas, demonstrações de ferramenta, dicas, casos e trilhas, com a sua marca, voz da ElevenLabs e revisão pela própria sessão.",
   "type": "module",
   "bin": {
     "claquete": "instalador/instalar.mjs",

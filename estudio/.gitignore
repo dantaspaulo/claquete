@@ -4,3 +4,5 @@ saida/
 public/aulas/
 public/gravacoes/
 sessao*.json
+.venv/
+marca/material/

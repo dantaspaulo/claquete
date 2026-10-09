@@ -1,17 +1,17 @@
 {
-  "_leia": "Configuração do estúdio. Tema, voz, convite final e as travas de conteúdo. Chaves de API NUNCA aqui: elas ficam no .env do estúdio (o instalador cria) ou nas variáveis ELEVENLABS_API_KEY e OPENAI_API_KEY.",
+  "_leia": "Configuração do estúdio. Tema, voz, convite final e as travas de conteúdo. A chave da ElevenLabs NUNCA aqui: fica no .env do estúdio (o instalador cria) ou na variável ELEVENLABS_API_KEY. A marca da pessoa (marca/marca.json) entra aqui com 'python3 scripts/kit.py marca'.",
   "tema": {
-    "fundo": "#0f0e0c",
-    "fundo2": "#1d1a15",
-    "janela": "#16140f",
-    "texto": "#f1ece3",
-    "suave": "#a39a8a",
-    "destaque": "#d6bd8f",
-    "destaque2": "#b08d57",
+    "fundo": "#0f1114",
+    "fundo2": "#171b20",
+    "janela": "#12161a",
+    "texto": "#f1f4f2",
+    "suave": "#9aa5a0",
+    "destaque": "#2ee59d",
+    "destaque2": "#1fb57a",
     "marca": "Seu Nome",
     "fonte_titulo": "Instrument Serif",
     "fonte_texto": "Inter",
-    "fundo_imagem": "fundos/champagne.jpg",
+    "fundo_imagem": "fundos/esmeralda.jpg",
     "_leia": "fundo_imagem: foto em public/ que vira o fundo desfocado atrás da janela, como papel de parede (o efeito dos apps de gravação, sem o app). Prontas: fundos/champagne.jpg, fundos/oceano.jpg, fundos/esmeralda.jpg. Vazio = luzes em degradê."
   },
   "voz": {
@@ -28,11 +28,6 @@
         "style": 0.5,
         "use_speaker_boost": true
       }
-    },
-    "openai": {
-      "modelo": "gpt-4o-mini-tts",
-      "voz": "alloy",
-      "instrucoes": "Fale em português do Brasil, tom de professor que explica a um colega, ritmo natural."
     },
     "velocidade": 1.1,
     "pausa_entre_partes": 0.35
@@ -58,8 +53,11 @@
   "travas": {
     "proibidas_na_fala": [],
     "aceitar": {},
-    "maximo_segundos": 240,
     "tela_parada_segundos": 2.5,
     "similaridade_minima": 0.9
+  },
+  "conferencia": {
+    "_leia": "A fala de cada parte é revisada pela própria sessão do Claude (subagente) antes de montar. Com o faster-whisper instalado (o instalador oferece), o relatório traz também a transcrição LOCAL e gratuita; nada sai da máquina. 'modelo_local': tiny, base, small (padrão) ou medium.",
+    "modelo_local": "small"
   }
 }
