@@ -1,11 +1,16 @@
 {
-  "name": "kit-video-ia",
-  "version": "1.0.0",
-  "description": "Skills para o Claude e um estúdio aberto para gravar aulas narradas animadas e tutoriais de tela, com voz por IA e conferência automática.",
+  "name": "claquete",
+  "version": "1.2.0",
+  "description": "Claquete.ai: skills para o Claude e um estúdio aberto para gravar aulas narradas animadas, demonstrações de ferramenta e vídeos para redes, com voz por IA e conferência automática.",
   "type": "module",
-  "bin": { "kit-video-ia": "instalador/instalar.mjs" },
-  "engines": { "node": ">=18" },
+  "bin": {
+    "claquete": "instalador/instalar.mjs",
+    "kit-video-ia": "instalador/instalar.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT",
   "author": "Paulo Sérgio Dantas (https://github.com/dantaspaulo)",
-  "repository": "github:dantaspaulo/kit-video-ia"
+  "repository": "github:dantaspaulo/claquete"
 }
