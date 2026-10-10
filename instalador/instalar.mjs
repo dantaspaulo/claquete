@@ -2,9 +2,10 @@
 // Instalador da Claquete.ai. Deixa tudo pronto para o Claude fazer vídeos com a sua marca:
 //   1. as skills (as da Claquete e as de motion design da iart.ai, MIT)
 //   2. o estúdio (projeto Remotion), novo ou atualizado sem perder o que é seu
-//   3. as ferramentas da máquina: ffmpeg, Python 3, os navegadores do Remotion e do Playwright e, se quiser, a
+//   3. as ferramentas da máquina: ffmpeg, Python 3, os navegadores do Remotion e do Playwright, o app das telas
+//      animadas (cenas/) com os componentes do React Bits baixados do site oficial para a sua máquina e, se quiser, a
 //      transcrição local e gratuita para a revisão da fala (faster-whisper)
-//   4. a chave da ElevenLabs num .env só seu, e a voz pronta na sua conta
+//   4. a chave da ElevenLabs num .env só seu, e a voz pronta na sua conta (e, se tiver, a licença do React Bits Pro)
 //   5. a sua marca: um questionário (nome, público, cores, fontes, logo, tom, chamada, voz) e o material que você
 //      tiver (pasta, HTML, .md ou link), para o Claude ler depois
 //   6. um teste final
@@ -15,7 +16,7 @@
 //   ... --projeto | --global                        skills em ./.claude/skills ou em ~/.claude/skills
 //   ... --skills claquete,aula-animada              só estas
 //   ... --estudio ./meu-estudio                     o estúdio nessa pasta
-//   ... --sem-ferramentas | --sem-motion | --sem-marca | --transcricao-local
+//   ... --sem-ferramentas | --sem-motion | --sem-marca | --sem-cenas | --sem-reactbits | --transcricao-local
 //   ... --desinstalar                               remove as skills (o estúdio fica)
 //   ... --versao | --ajuda
 //
@@ -42,7 +43,7 @@ const valor = (f) => {
 
 // Flag desconhecida (ou --help) mostra o uso e para: sem isso, "--help" rodava a instalação inteira.
 const FLAGS = ["--tudo", "--sim", "--atualizar", "--projeto", "--global", "--skills", "--estudio", "--sem-ferramentas", "--sem-motion",
-  "--sem-marca", "--transcricao-local", "--desinstalar", "--versao", "--ajuda", "--help", "-h"];
+  "--sem-marca", "--sem-cenas", "--sem-reactbits", "--transcricao-local", "--desinstalar", "--versao", "--ajuda", "--help", "-h"];
 const COM_VALOR = ["--skills", "--estudio"];
 const uso = () => readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").filter((l) => l.startsWith("//   ")).map((l) => l.slice(5)).join("\n");
 for (let i = 0; i < args.length; i++) {
@@ -117,6 +118,56 @@ function instalarMotion(destino) {
   return nomes;
 }
 
+// ── React Bits nas telas animadas ───────────────────────────────────────────
+// A licença do React Bits (MIT + Commons Clause) não deixa redistribuir os componentes: eles NÃO estão neste
+// repositório. O instalador baixa cada um do registro oficial direto para a máquina de quem instala, como o
+// "npx shadcn add" faria, e instala as dependências deles. O teste do estúdio recusa componente do React Bits versionado.
+const RB_GRATIS = ["SplitText", "BlurText", "ShinyText", "GradientText", "RotatingText", "TextType", "CountUp", "AnimatedList", "Orb", "Aurora", "Beams", "Particles"];
+const RB_PRO = ["staggered-text", "agentic-ball", "speeding-text", "animated-list", "magic-transform", "globe"];
+const GLOBE_GL = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.2/dist/globe.gl.min.js";
+
+// Ajuste para vídeo, só na cópia da pessoa: o canvas do React Three Fiber mede pelo tamanho de layout, não pelo retângulo
+// transformado (a câmera da cena dá zoom e as peças entram com escala; sem isto o desenho nasce do tamanho errado).
+const ajustarParaVideo = (codigo) => codigo.replace(/<Canvas\b(?![^>]*resize=)/g, "<Canvas resize={{ offsetSize: true }}");
+
+async function baixarReactBits(cenas, chavePro) {
+  const destino = join(cenas, "src", "components", "react-bits");
+  mkdirSync(destino, { recursive: true });
+  const itens = [
+    ...RB_GRATIS.map((n) => ({ nome: n, url: `https://reactbits.dev/r/${n}-TS-TW.json` })),
+    ...(chavePro ? RB_PRO.map((n) => ({ nome: n, url: `https://pro.reactbits.dev/api/r/starter/${n}-tw.json`, pro: true })) : []),
+  ];
+  const deps = new Set(), baixados = [], falhas = [];
+  for (const it of itens) {
+    try {
+      const r = await fetch(it.url, { headers: it.pro ? { Authorization: `Bearer ${chavePro}` } : {} });
+      if (!r.ok) {
+        falhas.push(`${it.nome} (${r.status === 401 || r.status === 403 ? "licença recusada" : r.status})`);
+        continue;
+      }
+      const item = await r.json();
+      for (const f of item.files || []) writeFileSync(join(destino, basename(f.path)), ajustarParaVideo(f.content));
+      for (const d of item.dependencies || []) deps.add(d);
+      baixados.push(it.nome);
+    } catch (e) {
+      falhas.push(`${it.nome} (${e.message})`);
+    }
+  }
+  if (baixados.includes("globe")) {
+    try {
+      const r = await fetch(GLOBE_GL);
+      if (r.ok) {
+        mkdirSync(join(cenas, "public", "vendor"), { recursive: true });
+        writeFileSync(join(cenas, "public", "vendor", "globe.gl.min.js"), Buffer.from(await r.arrayBuffer()));
+      } else falhas.push(`globe.gl (${r.status})`);
+    } catch (e) {
+      falhas.push(`globe.gl (${e.message})`);
+    }
+  }
+  const instalou = !deps.size || roda(`npm install --no-audit --no-fund ${[...deps].map((d) => `"${d}"`).join(" ")}`, cenas, false);
+  return { baixados, falhas, instalou };
+}
+
 function perguntarSegredo(q) {
   if (!process.stdin.isTTY) return Promise.resolve("");
   process.stdout.write(q);
@@ -169,12 +220,21 @@ function instaladorDoSistema(pacote) {
 
 // Atualiza o estúdio sem tocar no que é da pessoa: roteiros, gravações, marca, saída, chaves e a configuração dela
 // (que só ganha as chaves novas que não tinha).
-const DA_PESSOA = ["aulas", join("public", "aulas"), join("public", "gravacoes"), join("public", "marca"), "marca", "saida", ".env", "kit.config.json", "node_modules"];
+const DA_PESSOA = ["aulas", join("public", "aulas"), join("public", "gravacoes"), join("public", "marca"), "marca", "saida", ".env", "kit.config.json", "node_modules",
+  join("cenas", "node_modules"), join("cenas", "dist"), join("cenas", "src", "aulas"), join("cenas", "src", "components", "react-bits"), join("cenas", "public", "vendor")];
+// nunca saem do repositório para o estúdio de ninguém (são da máquina de quem desenvolve ou baixados na hora)
+const NAO_COPIAR = ["node_modules", "saida", ".venv", join("public", "aulas"), join("public", "gravacoes"), join("cenas", "node_modules"), join("cenas", "dist"),
+  join("cenas", "src", "components", "react-bits"), join("cenas", "public", "vendor")];
 function atualizarEstudio(estudio) {
-  const pula = DA_PESSOA.map((x) => join(PASTA_ESTUDIO, x));
+  const pula = [...new Set([...DA_PESSOA, ...NAO_COPIAR])].map((x) => join(PASTA_ESTUDIO, x));
   cpSync(PASTA_ESTUDIO, estudio, { recursive: true, filter: (f) => !pula.some((x) => f === x || f.startsWith(x + sep)) });
-  for (const ex of ["exemplo.json", "tutorial-exemplo.json"]) {
+  for (const ex of ["exemplo.json", "tutorial-exemplo.json", "animada-exemplo.json"]) {
     if (!existsSync(join(estudio, "aulas", ex))) cpSync(join(PASTA_ESTUDIO, "aulas", ex), join(estudio, "aulas", ex));
+  }
+  const cenaExemplo = join("cenas", "src", "aulas", "animada-exemplo.jsx");
+  if (!existsSync(join(estudio, cenaExemplo))) {
+    mkdirSync(dirname(join(estudio, cenaExemplo)), { recursive: true });
+    cpSync(join(PASTA_ESTUDIO, cenaExemplo), join(estudio, cenaExemplo));
   }
   const arq = join(estudio, "kit.config.json");
   const novo = JSON.parse(readFileSync(join(PASTA_ESTUDIO, "kit.config.json"), "utf8"));
@@ -273,7 +333,7 @@ async function questionarioMarca(perguntar, estudio) {
     linha: await perguntar("  Linha de apoio", ""),
   };
 
-  titulo("  Vídeos para redes (versão 2.1)");
+  titulo("  Vídeos para redes (versão 2.2)");
   m.avatar = { provedor: (await escolha("Provedor do avatar apresentador", ["Higgsfield (principal)", "HeyGen (alternativa)", "não vou usar avatar"], 1)).split(" ")[0].toLowerCase() };
 
   mkdirSync(join(estudio, "marca"), { recursive: true });
@@ -360,7 +420,7 @@ async function main() {
       console.log(`  ${estudio} já existe e não está vazia. Escolha outra pasta com --estudio.`);
       process.exit(2);
     } else {
-      const fora = ["node_modules", "saida", join("public", "aulas"), join("public", "gravacoes")].map((x) => join(PASTA_ESTUDIO, x));
+      const fora = NAO_COPIAR.map((x) => join(PASTA_ESTUDIO, x));
       cpSync(PASTA_ESTUDIO, estudio, { recursive: true, filter: (f) => !fora.some((x) => f === x || f.startsWith(x + sep)) });
       ok("arquivos copiados");
     }
@@ -399,9 +459,25 @@ async function main() {
     roda("npm install --no-audit --no-fund", estudio) ? ok("dependências do estúdio (npm)") : nao("npm install falhou: rode dentro do estúdio");
     console.log(fraco("  baixando o navegador que o Remotion usa para renderizar..."));
     roda("npx remotion browser ensure", estudio) ? ok("navegador do Remotion") : nao("navegador do Remotion: rode 'npx remotion browser ensure' no estúdio");
-    if (semPerguntas || (await sim("  Instalar o navegador do Playwright (a IA usa para operar sistemas e gravar a tela)?"))) {
-      const cmd = SO === "linux" ? "npx playwright install --with-deps chromium" : "npx playwright install chromium";
-      roda(cmd, estudio) ? ok("navegador do Playwright") : nao(`navegador do Playwright: rode '${cmd}' no estúdio`);
+    const cmdPw = SO === "linux" ? "npx playwright install --with-deps chromium" : "npx playwright install chromium";
+    if (tem("--sem-ferramentas")) nao(`navegador do Playwright: rode '${cmdPw}' no estúdio quando for gravar a tela ou fotografar as telas animadas`);
+    else if (semPerguntas || (await sim("  Instalar o navegador do Playwright (a IA usa para operar sistemas, gravar a tela e fotografar as telas animadas)?"))) {
+      roda(cmdPw, estudio) ? ok("navegador do Playwright") : nao(`navegador do Playwright: rode '${cmdPw}' no estúdio`);
+    }
+    // Telas animadas: o app de cenas (Vite + React + motion) e os componentes do React Bits, baixados do site oficial.
+    const cenas = join(estudio, "cenas");
+    if (existsSync(cenas) && !tem("--sem-cenas")) {
+      console.log(fraco("  instalando o app das telas animadas (Vite, React, motion)..."));
+      if (roda("npm install --no-audit --no-fund", cenas, false)) {
+        ok("telas animadas (cenas/)");
+        if (tem("--sem-reactbits")) nao("sem React Bits: as telas animadas usam só as peças próprias, feitas com motion");
+        else if (semPerguntas || (await sim("  Baixar do reactbits.dev os 12 componentes animados grátis (textos, contador, esfera, aurora, partículas) para as telas animadas?"))) {
+          console.log(fraco("  baixando do registro oficial do React Bits para a sua máquina (licença MIT + Commons Clause: use à vontade, só não revenda os componentes)..."));
+          const r = await baixarReactBits(cenas, "");
+          if (r.baixados.length) ok(`React Bits: ${r.baixados.join(", ")}${r.instalou ? "" : fraco(" (as dependências não instalaram: rode 'npm install' em cenas/)")}`);
+          if (r.falhas.length) nao(`React Bits, não baixou: ${r.falhas.join(", ")}`);
+        } else nao("sem React Bits: as telas animadas usam só as peças próprias. Depois: npx github:dantaspaulo/claquete --atualizar");
+      } else nao("o app das telas animadas não instalou: rode 'npm install' em cenas/ (as outras telas funcionam sem ele)");
     }
     // Transcrição local num ambiente Python só do estúdio (.venv): não mexe no Python do sistema.
     const py = comandoPython();
@@ -436,6 +512,24 @@ async function main() {
         ok(`${k} guardada em ${arqEnv}`);
       } else nao(`${k} ficou de fora: ponha no ${arqEnv} depois`);
     }
+    // React Bits Pro: opcional. Com a licença, as telas animadas ganham os componentes que as aulas do ChatADV usam.
+    const cenasPro = join(estudio, "cenas");
+    if (existsSync(join(cenasPro, "node_modules")) && !tem("--sem-cenas") && !tem("--sem-reactbits")) {
+      const kp = "REACTBITS_LICENSE_KEY";
+      let chave = (atual.match(new RegExp(`^${kp}=(.+)$`, "m")) || [])[1]?.trim().replace(/^["']|["']$/g, "") || process.env[kp] || "";
+      const nova = !temNoEnv(kp) && !chave && !semPerguntas;
+      if (nova) chave = await perguntarSegredo(`  Licença do React Bits Pro ${fraco("(se tiver; os componentes que as aulas do ChatADV usam; enter para pular)")}: `);
+      if (chave) {
+        const r = await baixarReactBits(cenasPro, chave);
+        const pro = r.baixados.filter((n) => RB_PRO.includes(n));
+        if (pro.length) {
+          ok(`React Bits Pro: ${pro.join(", ")}`);
+          // guarda no .env só a licença que a pessoa digitou agora (a do ambiente fica onde ela pôs)
+          if (nova) linhas.push(`${kp}=${chave}`);
+        }
+        if (r.falhas.length) nao(`React Bits, não baixou: ${r.falhas.join(", ")}`);
+      } else nao("sem React Bits Pro (opcional): as telas animadas usam os componentes grátis e as peças próprias");
+    }
     if (/^OPENAI_API_KEY=/m.test(atual)) nao("o .env ainda tem OPENAI_API_KEY: a Claquete 2.0 não usa mais; pode apagar a linha");
     if (linhas.length) {
       writeFileSync(arqEnv, (atual ? atual.replace(/\n?$/, "\n") : "# Chaves do estúdio. Este arquivo é só seu: nunca vai para repositório.\n") + linhas.join("\n") + "\n");
@@ -444,7 +538,7 @@ async function main() {
       } catch {}
     }
     const py = comandoPython();
-    if (py && (temNoEnv(k) || linhas.length) && !atualizar) {
+    if (py && (temNoEnv(k) || linhas.some((l) => l.startsWith(`${k}=`))) && !atualizar) {
       console.log(fraco("  preparando a voz na sua conta da ElevenLabs e gerando um áudio de teste..."));
       roda(`${py} scripts/kit.py voz`, estudio) ? ok("voz pronta (ouça saida/teste-voz.mp3)") : nao(`a voz não ficou pronta: rode '${py} scripts/kit.py voz' no estúdio`);
     }
@@ -471,12 +565,20 @@ async function main() {
     const py = comandoPython();
     py && roda(`${py} scripts/kit.py validar exemplo`, estudio, false) ? ok("o vídeo de exemplo passa na validação") : nao("validação do exemplo falhou");
     roda("npx remotion compositions src/index.ts", estudio, false) ? ok("o Remotion monta o projeto") : nao("o Remotion não montou o projeto: rode 'npx remotion compositions src/index.ts' no estúdio");
+    const rb = join(estudio, "cenas", "src", "components", "react-bits");
+    if (existsSync(join(estudio, "cenas", "node_modules"))) {
+      const n = existsSync(rb) ? readdirSync(rb).filter((f) => /\.(tsx|jsx)$/.test(f)).length : 0;
+      roda("npx vite build --logLevel error --outDir dist --emptyOutDir", join(estudio, "cenas"), false)
+        ? ok(`as telas animadas compilam (${n} componentes do React Bits nesta máquina)`)
+        : nao("as telas animadas não compilaram: rode 'npx vite build' em cenas/");
+    }
   }
 
   titulo(`Pronto: Claquete.ai ${VERSAO}`);
   if (estudio) {
     console.log(`  Abra o Claude na pasta ${verde(pastaEstudio)} e diga ${verde('"quero fazer um vídeo"')}.`);
     console.log("  Ele pergunta o tipo (demonstração, aula animada, dica, caso, trilha) e, nas aulas, a duração de 2 a 5 minutos.");
+    console.log(`  Para ver as telas animadas: ${verde('"faz a aula animada-exemplo"')} (cenas em React, fotografadas no tempo da voz).`);
     if (existsSync(join(estudio, "marca", "material"))) console.log(`  Para ele ler o material da marca: ${verde('"configura minha marca"')}.`);
   }
   console.log(fraco("  Durante as gravações a IA opera o computador: deixe a máquina livre e feche o que for pesado.\n"));

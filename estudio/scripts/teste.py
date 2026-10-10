@@ -2,6 +2,7 @@
 """Testes dos portões e das travas do estúdio, sem gastar nada (a voz é um tom gerado pelo ffmpeg).
 
   python3 scripts/teste.py
+  python3 scripts/teste.py --licenca <arquivos...>   só a trava do React Bits (o pre-commit do repositório usa)
 
 Cada caso aqui é uma promessa do README: roteiro sem ok não narra, fala sem revisão não monta, a duração escolhida vale,
 o roteiro mudado pede ok novo e a entrega só apaga a montagem depois de conferir a cópia."""
@@ -15,6 +16,21 @@ from pathlib import Path
 
 ESTUDIO = Path(__file__).resolve().parent.parent
 falhas = []
+
+# Componentes do React Bits: a licença (MIT + Commons Clause) não deixa redistribuí-los, então nenhum pode estar versionado
+# no repositório da Claquete. O instalador baixa cada um na máquina de quem instala (src/components/react-bits/ das cenas).
+RB_NOMES = {"SplitText", "BlurText", "ShinyText", "GradientText", "RotatingText", "TextType", "CountUp", "AnimatedList", "Orb", "Aurora",
+            "Beams", "Particles", "staggered-text", "agentic-ball", "speeding-text", "animated-list", "magic-transform", "globe"}
+
+
+def licenca_react_bits(arquivos):
+    """Dos caminhos dados, os que são componente do React Bits (pasta react-bits ou arquivo com o nome de um deles)."""
+    ruins = []
+    for f in arquivos:
+        q = Path(f)
+        if "react-bits" in q.parts or (q.stem in RB_NOMES and q.suffix in (".tsx", ".jsx")) or q.name == "globe.gl.min.js":
+            ruins.append(str(f))
+    return ruins
 
 
 def confere(nome, cond):
@@ -50,10 +66,34 @@ def carregar_kit(raiz):
     return m
 
 
+def testes_licenca():
+    confere("a trava do React Bits pega componente na pasta react-bits e pelo nome",
+            licenca_react_bits(["estudio/cenas/src/components/react-bits/Orb.tsx", "outra/pasta/SplitText.tsx", "x/agentic-ball.tsx"]) ==
+            ["estudio/cenas/src/components/react-bits/Orb.tsx", "outra/pasta/SplitText.tsx", "x/agentic-ball.tsx"])
+    confere("a trava do React Bits deixa passar o código da Claquete",
+            licenca_react_bits(["estudio/cenas/src/rb.js", "estudio/cenas/src/ilustra.jsx", "estudio/cenas/src/aulas/animada-exemplo.jsx"]) == [])
+    repo = ESTUDIO.parent
+    if (repo / ".git").exists() and shutil.which("git"):
+        versionados = subprocess.run(["git", "ls-files"], cwd=repo, capture_output=True, text=True).stdout.split()
+        confere("nenhum componente do React Bits versionado no repositório", licenca_react_bits(versionados) == [])
+        ign = (repo / ".gitignore").read_text(encoding="utf-8")
+        confere("o .gitignore deixa de fora os componentes baixados", "estudio/cenas/src/components/react-bits/" in ign)
+    else:
+        print("pulado  React Bits versionado (fora do repositório da Claquete)")
+
+
 def main():
+    if "--licenca" in sys.argv:
+        ruins = licenca_react_bits(sys.argv[sys.argv.index("--licenca") + 1:])
+        for f in ruins:
+            print(f"RECUSADO: {f} é componente do React Bits (a licença não deixa redistribuir; ele é baixado na máquina de quem instala)")
+        sys.exit(1 if ruins else 0)
+    testes_licenca()
     tmp = Path(tempfile.mkdtemp())
     raiz = tmp / "estudio"
-    shutil.copytree(ESTUDIO, raiz, ignore=shutil.ignore_patterns("node_modules", ".venv", "saida", "aulas", "public"))
+    shutil.copytree(ESTUDIO, raiz, ignore=shutil.ignore_patterns("node_modules", ".venv", "saida", "aulas", "public", "dist", "react-bits"))
+    (raiz / "cenas" / "src" / "aulas").mkdir(parents=True, exist_ok=True)
+    shutil.copy(ESTUDIO / "cenas" / "src" / "aulas" / "animada-exemplo.jsx", raiz / "cenas" / "src" / "aulas" / "animada-exemplo.jsx")
     (raiz / "aulas").mkdir()
     (raiz / "public").mkdir()
     for f in ("fundos",):
@@ -61,6 +101,7 @@ def main():
             shutil.copytree(ESTUDIO / "public" / f, raiz / "public" / f)
     shutil.copy(ESTUDIO / "aulas" / "exemplo.json", raiz / "aulas" / "exemplo.json")
     shutil.copy(ESTUDIO / "aulas" / "tutorial-exemplo.json", raiz / "aulas" / "tutorial-exemplo.json")
+    shutil.copy(ESTUDIO / "aulas" / "animada-exemplo.json", raiz / "aulas" / "animada-exemplo.json")
 
     rc, out = kit(raiz, "novo", "x", "--tipo", "aula")
     confere("aula sem --minutos é recusada (a pessoa escolhe a duração)", rc == 1 and "minutos" in out)
@@ -182,6 +223,50 @@ def main():
         (raiz / "marca" / "marca.json").write_text(json.dumps({"nome": "X", "fontes": {"titulos": "Fonte Que Nao Existe"}}))
         rc, out = kit(raiz, "marca")
         confere("fonte fora do Google Fonts é recusada", rc == 1 and "Google Fonts" in out)
+
+    # telas animadas (2.1): a cena é escrita depois do ok, fotografada no tempo da voz, e o montar recusa sem a foto
+    an = json.loads((raiz / "aulas" / "animada-exemplo.json").read_text(encoding="utf-8"))
+    sem = json.loads(json.dumps(an))
+    del sem["partes"][0]["tela"]["descricao"]
+    (raiz / "aulas" / "animada-sem.json").write_text(json.dumps(sem, ensure_ascii=False))
+    rc, out = kit(raiz, "validar", "animada-sem")
+    confere("tela animada sem descrição é recusada (a pessoa aprova o que a cena mostra)", rc == 1 and "descricao" in out)
+    falta = json.loads(json.dumps(an))
+    falta["partes"][1]["tela"]["cena"] = "CenaQueNaoExiste"
+    (raiz / "aulas" / "animada-falta.json").write_text(json.dumps(falta, ensure_ascii=False))
+    rc, out = kit(raiz, "plano", "animada-falta")
+    md = (raiz / "saida" / "animada-falta" / "roteiro-e-plano.md").read_text()
+    confere("cena ainda não escrita é só aviso no plano, na lista do que escrever depois do ok",
+            rc == 0 and "Cenas animadas a escrever depois do ok" in md and "CenaQueNaoExiste" in md and "**Cena animada** (Cena1)" in md)
+    kit(raiz, "aprovar", "animada-exemplo")
+    narracao_falsa(raiz, "animada-exemplo")
+    rc, out = kit(raiz, "cenas", "animada-exemplo")
+    confere("cenas antes da revisão da fala para no portão 2", rc == 2)
+    kit(raiz, "conferir", "animada-exemplo")
+    kit(raiz, "conferir", "animada-exemplo", "--aprovado")
+    rc, out = kit(raiz, "cenas", "animada-exemplo")
+    confere("cenas sem o app instalado diz o que fazer", rc == 1 and "npm install" in out)
+    rc, out = kit(raiz, "montar", "animada-exemplo")
+    confere("montar recusa tela animada sem a foto da cena", rc == 1 and "kit.py cenas animada-exemplo" in out)
+    k2 = carregar_kit(raiz)
+    d = raiz / "public" / "aulas" / "animada-exemplo"
+    feitas = {}
+    for i, p in enumerate(an["partes"], 1):
+        meta = json.loads((d / f"parte-{i:02d}.json").read_text())
+        dur = k2.duracao_audio(d / f"parte-{i:02d}.mp3") + (0.35 if i < len(an["partes"]) else k2.FOLGA_FINAL)
+        feitas[str(i)] = k2.assinatura_cena("animada-exemplo", i, p, meta, k2.cfg(), dur)
+        for f in ("h", "v"):
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=30:duration=1", "-pix_fmt", "yuv420p",
+                            str(d / f"cena-{i:02d}-{f}.mp4")], check=True)
+    (d / "cenas.json").write_text(json.dumps(feitas))
+    rc, out = kit(raiz, "montar", "animada-exemplo")
+    plano = json.loads((d / "plano.json").read_text()) if (d / "plano.json").exists() else {}
+    confere("com as cenas fotografadas o montar segue e o plano aponta os clipes dos dois formatos",
+            rc == 0 and plano.get("partes", [{}])[0].get("tela", {}).get("clipes", {}).get("v") == "aulas/animada-exemplo/cena-01-v.mp4")
+    arq = raiz / "cenas" / "src" / "aulas" / "animada-exemplo.jsx"
+    arq.write_text(arq.read_text() + "\n// mudou\n")
+    rc, out = kit(raiz, "montar", "animada-exemplo")
+    confere("mudou o código da cena: o montar pede a foto de novo", rc == 1 and "kit.py cenas" in out)
 
     # disco quase cheio: o render nem começa
     k.MINIMO_LIVRE_GB = 10 ** 9

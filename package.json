@@ -1,6 +1,6 @@
 {
   "name": "claquete",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Claquete.ai: o estúdio de vídeo que o Claude opera. Aulas animadas, demonstrações de ferramenta, dicas, casos e trilhas, com a sua marca, voz da ElevenLabs e revisão pela própria sessão.",
   "type": "module",
   "bin": {

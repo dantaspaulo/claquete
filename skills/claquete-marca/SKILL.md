@@ -40,7 +40,7 @@ e as outras skills leem.
 | `glossario` | termos que não viram sinônimo | roteiro e revisões |
 | `voz` | `{ "nome": "Raquel" }` ou `{ "nome": "...", "voice_id": "..." }` | `voz.elevenlabs` |
 | `chamada` | `texto`, `endereco`, `linha` | `convite.titulo`, `convite.endereco`, `convite.texto` |
-| `avatar.provedor` | `higgsfield`, `heygen` ou sem avatar | guardado para a versão 2.1 |
+| `avatar.provedor` | `higgsfield`, `heygen` ou sem avatar | guardado para a versão 2.2 |
 
 `cores.secundaria` não sai do questionário: ponha quando o material tiver uma segunda cor de marca.
 `cores.fundo2`, `cores.janela` e `cores.suave` também não: são opcionais e viram `tema.fundo2`,
@@ -173,7 +173,7 @@ Com as skills de motion design da iart.ai, quando instaladas:
   `suave`) e o contraste.
 - **motion-art-direction**: traduz a marca numa linguagem de movimento. Se o material pedir outra
   coisa que o `movimento` respondido, pergunte, como em qualquer contradição.
-- **logo-animation**: a vinheta do logo. Hoje ela fica à parte; o tipo vinheta de marca chega na 2.1.
+- **logo-animation**: a vinheta do logo. Hoje ela fica à parte; o tipo vinheta de marca chega na 2.2.
 
 ## 7. Fechar
 

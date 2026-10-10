@@ -7,6 +7,7 @@
   python3 scripts/kit.py aprovar <id>                    PORTÃO 1: o ok do roteiro e do plano (mudou depois, pede de novo)
   python3 scripts/kit.py narrar <id> [--partes 1,3]      gera a voz de cada parte na ElevenLabs (paga)
   python3 scripts/kit.py conferir <id> [--aprovado]      PORTÃO 2: relatório da fala para o subagente; --aprovado libera
+  python3 scripts/kit.py cenas <id> [--partes 2] [--previa]  fotografa as telas animadas (cenas/) no tempo da voz
   python3 scripts/kit.py montar <id>                     plano do Remotion e conferência do ritmo e da duração
   python3 scripts/kit.py renderizar <id> [--formatos h]  renderiza no Remotion
   python3 scripts/kit.py finalizar <id> [--pagina]       som em -14 LUFS, tela parada, legendas, folha de quadros
@@ -16,7 +17,8 @@
   python3 scripts/kit.py voz                             põe a voz configurada na sua conta e gera um áudio de teste
   python3 scripts/kit.py versao
 
-Só biblioteca padrão do Python. Precisa de ffmpeg/ffprobe e Node (npx remotion). Chave: ELEVENLABS_API_KEY, no
+Só biblioteca padrão do Python. Precisa de ffmpeg/ffprobe e Node (npx remotion; as telas animadas usam também o app de
+cenas em cenas/, com Vite e o Playwright). Chave: ELEVENLABS_API_KEY, no
 ambiente ou no .env do estúdio. Nenhuma outra API: a conferência da fala é da própria sessão do Claude (subagente),
 com transcrição local e gratuita quando o faster-whisper estiver instalado.
 """
@@ -40,7 +42,10 @@ AULAS = RAIZ / "aulas"
 PUBLIC = RAIZ / "public"
 SAIDA = RAIZ / "saida"
 FPS = 30
-TIPOS = {"capa", "lista", "colunas", "fluxo", "frase", "numero", "video", "imagem"}
+TIPOS = {"capa", "lista", "colunas", "fluxo", "frase", "numero", "video", "imagem", "animada"}
+# Tela "animada" (2.1): uma cena em React (cenas/src/aulas/<id>.jsx, export Cena<N>), com motion e os componentes do
+# React Bits que o instalador baixa na máquina da pessoa, fotografada quadro a quadro no tempo da voz (kit.py cenas).
+CENAS = RAIZ / "cenas"
 # Tipos de vídeo e a duração que cada um aceita (segundos, do vídeo pronto). Aula, caso e trilha: a pessoa escolhe de 2 a 5
 # minutos ao começar o projeto ("minutos" no arquivo). "exemplo" é só para testar o estúdio.
 DURACAO = {"aula": (120, 300), "caso": (120, 300), "trilha": (120, 300), "demonstracao": (60, 240), "dica": (30, 90),
@@ -156,6 +161,15 @@ def estimativa(a, c):
     return palavras / (PALAVRAS_POR_SEGUNDO * vel) + pausa * max(0, len(a.get("partes", [])) - 1) + INICIO + FOLGA_FINAL + ENCERRAMENTO
 
 
+def componente_cena(tela, i):
+    return str(tela.get("cena") or f"Cena{i}")
+
+
+def cena_existe(id_, nome):
+    arq = CENAS / "src" / "aulas" / f"{id_}.jsx"
+    return arq.exists() and re.search(rf"export\s+(function|const)\s+{re.escape(nome)}\b", arq.read_text(encoding="utf-8")) is not None
+
+
 def validar(id_, para_montar=False):
     """para_montar=False (plano, aprovar): gravação que ainda não existe é aviso (na demonstração, grava-se depois do ok).
     No montar ela é erro."""
@@ -206,6 +220,15 @@ def validar(id_, para_montar=False):
             campo, maximo = LIMITES[t["tipo"]]
             if len(t.get(campo, [])) > maximo:
                 erros.append(f"parte {i}: {campo} tem mais de {maximo} itens (divida em duas partes)")
+        if t["tipo"] == "animada":
+            if not str(t.get("descricao", "")).strip():
+                erros.append(f"parte {i}: tela animada precisa de 'descricao' (o que a cena mostra, para a pessoa aprovar)")
+            nome = componente_cena(t, i)
+            if not re.fullmatch(r"[A-Z][A-Za-z0-9_]*", nome):
+                erros.append(f"parte {i}: 'cena' deve ser o nome de um componente React (ex.: Cena{i})")
+            elif not cena_existe(id_, nome):
+                (erros if para_montar else avisos).append(f"parte {i}: a cena {nome} não existe em cenas/src/aulas/{id_}.jsx"
+                                                          + ("" if para_montar else " (escreva depois do ok do roteiro)"))
         if t["tipo"] in ("video", "imagem") and not (PUBLIC / t.get("arquivo", "")).is_file():
             (erros if para_montar else avisos).append(f"parte {i}: arquivo {t.get('arquivo')} não existe em public/"
                                                       + ("" if para_montar else " (grave depois do ok do roteiro)"))
@@ -260,6 +283,8 @@ def plano_md(id_):
                 txt = it.get("texto") if isinstance(it, dict) else it
                 quando = f" (entra em \"{it['quando']}\")" if isinstance(it, dict) and it.get("quando") else ""
                 linhas.append(f"- {txt}{quando}")
+        if t.get("tipo") == "animada":
+            linhas.append(f"**Cena animada** ({componente_cena(t, i)}): {t.get('descricao', '')}")
         if t.get("tipo") in ("video", "imagem"):
             linhas.append(f"**Plano de edição:** arquivo `{t.get('arquivo')}`"
                           + (f", começa em {t['de']} s" if t.get("de") is not None else "")
@@ -270,9 +295,12 @@ def plano_md(id_):
             linhas.append(f"- ficha \"{ch.get('texto')}\" em \"{ch.get('quando')}\"")
         linhas.append("")
     gravar = sorted({re.search(r"arquivo (\S+)", x).group(1) for x in avisos if "grave depois" in x})
-    outros = [x for x in avisos if "grave depois" not in x]
+    escrever = [re.sub(r"^parte (\d+): a cena (\w+) .*", r"parte \1: \2", x) for x in avisos if "escreva depois" in x]
+    outros = [x for x in avisos if "grave depois" not in x and "escreva depois" not in x]
     if gravar:
         linhas += ["## A gravar depois do ok", ""] + [f"- `{g}`" for g in gravar] + [""]
+    if escrever:
+        linhas += ["## Cenas animadas a escrever depois do ok", ""] + [f"- {e}" for e in escrever] + [""]
     if erros or outros:
         linhas += ["## A resolver antes do ok", ""] + [f"- ERRO: {x}" for x in erros] + [f"- aviso: {x}" for x in outros] + [""]
     linhas += ["---", f"Para aprovar: `python3 scripts/kit.py aprovar {id_}`. Qualquer mudança depois pede um ok novo."]
@@ -704,11 +732,17 @@ def montar(id_, formatos):
         ev = eventos(p["tela"], meta["palavras"], dur) + [dur + pausa]
         maior = max(b - a_ for a_, b in zip(ev, ev[1:]))
         # Gravação de tela já se mexe sozinha: quem mede o ritmo dela é o medidor de tela parada, no vídeo pronto.
-        if maior > limite and p["tela"]["tipo"] != "video":
+        if maior > limite and p["tela"]["tipo"] not in ("video", "animada"):
             onde = next(a_ for a_, b in zip(ev, ev[1:]) if b - a_ == maior)
             ritmo.append(f"parte {i}: {maior:.1f} s sem nada novo a partir de {onde:.1f} s (limite {limite} s). "
                          f"Ponha um 'quando' num item, uma ficha em 'chips', ou divida a parte.")
-        partes.append({"fala": p["fala"], "rotulo": p.get("rotulo"), "tela": p["tela"],
+        tela = dict(p["tela"])
+        if tela["tipo"] == "animada":
+            atual = assinatura_cena(id_, i, p, meta, c, dur + (pausa if i < len(a["partes"]) else FOLGA_FINAL))
+            if capturas_feitas(id_).get(str(i)) != atual or not all((d / f"cena-{i:02d}-{f}.mp4").exists() for f in ("h", "v")):
+                erros.append(f"parte {i}: a cena animada não foi fotografada (ou mudou depois): kit.py cenas {id_} --partes {i}")
+            tela["clipes"] = {f: f"aulas/{id_}/cena-{i:02d}-{f}.mp4" for f in ("h", "v")}
+        partes.append({"fala": p["fala"], "rotulo": p.get("rotulo"), "tela": tela,
                        "audio": f"aulas/{id_}/parte-{i:02d}.mp3", "inicio": round(t, 3),
                        "duracao": round(dur, 3), "palavras": meta["palavras"]})
         t += dur + pausa
@@ -735,6 +769,132 @@ def montar(id_, formatos):
     gerar_fontes(c)
     indice()
     print(f"  plano: {len(partes)} partes, {total:.1f} s, ritmo ok")
+
+
+# ── cenas animadas: fotografadas quadro a quadro, no tempo da voz ─────────
+
+def assinatura_cena(id_, i, p, meta, c, dur):
+    """Muda quando muda o que a captura de uma tela animada usa: o código da cena e das peças, os componentes baixados,
+    o tempo das palavras, a duração e o tema."""
+    h = hashlib.sha256()
+    for arq in [CENAS / "src" / "aulas" / f"{id_}.jsx", CENAS / "src" / "ilustra.jsx"]:
+        h.update(arq.read_bytes() if arq.exists() else b"")
+    rb = CENAS / "src" / "components" / "react-bits"
+    h.update(json.dumps(sorted(x.name for x in rb.glob("*")) if rb.exists() else []).encode())
+    tema = {k: v for k, v in c["tema"].items() if not k.startswith("_")}
+    h.update(json.dumps([componente_cena(p["tela"], i), meta.get("palavras"), round(dur, 3), tema], sort_keys=True, ensure_ascii=False).encode())
+    return h.hexdigest()[:16]
+
+
+def capturas_feitas(id_):
+    arq = pasta(id_) / "cenas.json"
+    return json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {}
+
+
+def cenas_pendentes(id_):
+    a, c, d = aula(id_), cfg(), pasta(id_)
+    pausa, feitas, out = c["voz"].get("pausa_entre_partes", 0.35), capturas_feitas(id_), []
+    for i, p in enumerate(a["partes"], 1):
+        if p["tela"]["tipo"] != "animada" or not (d / f"parte-{i:02d}.json").exists():
+            continue
+        meta = json.loads((d / f"parte-{i:02d}.json").read_text(encoding="utf-8"))
+        dur = duracao_audio(d / f"parte-{i:02d}.mp3") + (pausa if i < len(a["partes"]) else FOLGA_FINAL)
+        if feitas.get(str(i)) != assinatura_cena(id_, i, p, meta, c, dur) or not all((d / f"cena-{i:02d}-{f}.mp4").exists() for f in ("h", "v")):
+            out.append(i)
+    return out
+
+
+def cenas(id_, partes=None, previa=False):
+    """Compila o app de cenas, abre cada tela animada no navegador com o relógio controlado e fotografa quadro a quadro,
+    deitado e em pé (cena-NN-h.mp4 e cena-NN-v.mp4). Depois mede a tela parada de cada uma."""
+    a, c, d = aula(id_), cfg(), pasta(id_)
+    alvo = [i for i, p in enumerate(a["partes"], 1) if p["tela"]["tipo"] == "animada" and (not partes or i in partes)]
+    if not alvo:
+        print("  nenhuma tela animada para fotografar")
+        return
+    if not conferencia_ok(id_):
+        raise Portao(f"a fala ainda não foi aprovada na revisão, e a cena anda no tempo das palavras: kit.py conferir {id_}")
+    if not (CENAS / "node_modules").exists():
+        raise Erro("o app de cenas não está instalado: no estúdio, rode 'cd cenas && npm install' (o instalador faz isso)")
+    faltam = [f"parte {i}: {componente_cena(a['partes'][i - 1]['tela'], i)}" for i in alvo if not cena_existe(id_, componente_cena(a["partes"][i - 1]["tela"], i))]
+    if faltam:
+        raise Erro(f"cena que não existe em cenas/src/aulas/{id_}.jsx: " + "; ".join(faltam))
+    pausa = c["voz"].get("pausa_entre_partes", 0.35)
+    tema = {k: v for k, v in c["tema"].items() if not k.startswith("_")}
+    lista, assin = [], {}
+    for i in alvo:
+        p = a["partes"][i - 1]
+        meta = json.loads((d / f"parte-{i:02d}.json").read_text(encoding="utf-8"))
+        dur = duracao_audio(d / f"parte-{i:02d}.mp3") + (pausa if i < len(a["partes"]) else FOLGA_FINAL)
+        lista.append({"n": i, "aula": id_, "componente": componente_cena(p["tela"], i), "dur": round(dur, 3), "tema": tema,
+                      "palavras": [{"t": w["p"], "i": w["ini"]} for w in meta["palavras"]]})
+        assin[str(i)] = assinatura_cena(id_, i, p, meta, c, dur)
+    npx = shutil.which("npx") or "npx"
+    print("  compilando as cenas...")
+    r = subprocess.run([npx, "vite", "build", "--logLevel", "error", "--emptyOutDir", "--outDir", "dist"], cwd=CENAS, capture_output=True, text=True)
+    if r.returncode:
+        raise Erro(f"as cenas não compilaram:\n{(r.stderr or r.stdout)[-2500:]}")
+    import socket
+    with socket.socket() as so:
+        so.bind(("127.0.0.1", 0))
+        porta = so.getsockname()[1]
+    srv = subprocess.Popen([sys.executable, "-m", "http.server", str(porta), "-b", "127.0.0.1", "-d", str(CENAS / "dist")],
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    entrada = d / ".cenas-entrada.json"
+    try:
+        import time
+        for _ in range(100):  # espera o servidor subir (até 10 s)
+            try:
+                urllib.request.urlopen(f"http://127.0.0.1:{porta}/", timeout=1)
+                break
+            except OSError:
+                time.sleep(0.1)
+        entrada.write_text(json.dumps({"url": f"http://127.0.0.1:{porta}/", "saida": str(d), "fps": FPS, "formatos": ["h", "v"], "cenas": lista,
+                                       **({"previa": [0.1, 0.3, 0.5, 0.7, 0.9]} if previa else {})}, ensure_ascii=False))
+        print(f"  fotografando {len(lista)} cena(s), deitada e em pé (uns 13 s de máquina por segundo de cena)...")
+        try:
+            r = subprocess.run(["node", str(CENAS / "capturar.cjs"), str(entrada)], cwd=RAIZ)
+        except FileNotFoundError:
+            raise Erro("não achei o Node (node) para fotografar as cenas")
+    finally:
+        srv.terminate()
+        srv.wait(timeout=10)
+        entrada.unlink(missing_ok=True)
+    if previa:
+        (SAIDA / id_).mkdir(parents=True, exist_ok=True)
+        for x in lista:
+            for f in ("h", "v"):
+                fotos = sorted(d.glob(f"previa-cena-{x['n']:02d}-{f}-*.jpg"))
+                if fotos:
+                    folha = SAIDA / id_ / f"previa-{x['n']:02d}-{f}.jpg"
+                    roda(["ffmpeg", "-y", "-loglevel", "error", *sum([["-i", str(q)] for q in fotos], []), "-filter_complex",
+                          f"{'hstack' if f == 'v' else 'vstack'}=inputs={len(fotos)},scale={'2400:-2' if f == 'v' else '900:-2'}", str(folha)])
+                    for q in fotos:
+                        q.unlink()
+        print(f"  prévias em {SAIDA / id_} (previa-NN-h.jpg e previa-NN-v.jpg)")
+    if r.returncode == 3:
+        raise Erro("há peça cortada pela metade na borda da câmera (lista acima): mude a posição ou o foco do zoom")
+    if r.returncode:
+        raise Erro("a captura das cenas parou (veja a mensagem acima)")
+    if previa:
+        return
+    # cada cena que passa na tela parada fica registrada, mesmo que outra seja recusada: só a recusada se fotografa de novo
+    limite, paradas, feitas = c["travas"].get("tela_parada_segundos", 2.5), [], capturas_feitas(id_)
+    for x in lista:
+        dela = []
+        for f in ("h", "v"):
+            q = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(d / f"cena-{x['n']:02d}-{f}.mp4"), "-vf",
+                                f"scale=480:-2,freezedetect=n={RUIDO}:d={limite}", "-an", "-f", "null", "-"], capture_output=True, text=True)
+            dela += [f"parte {x['n']} ({f}): parada a partir de {float(t):.1f} s" for t in re.findall(r"freeze_start: ([\d.]+)", q.stderr)]
+        if dela:
+            paradas += dela
+            feitas.pop(str(x["n"]), None)
+        else:
+            feitas[str(x["n"])] = assin[str(x["n"])]
+    (d / "cenas.json").write_text(json.dumps(feitas, indent=1), encoding="utf-8")
+    if paradas:
+        raise Erro("tela parada por mais de " + f"{limite} s nas cenas: dê uma novidade a cada 2 s nesses trechos\n  " + "\n  ".join(paradas))
+    print(f"  cenas prontas: {', '.join(f'parte {x}' for x in alvo)}")
 
 
 def indice():
@@ -918,13 +1078,14 @@ def conferencia_ok(id_):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("comando", choices=["novo", "validar", "plano", "aprovar", "narrar", "conferir", "montar", "renderizar",
+    ap.add_argument("comando", choices=["novo", "validar", "plano", "aprovar", "narrar", "conferir", "cenas", "montar", "renderizar",
                                         "finalizar", "entregar", "fazer", "marca", "voz", "versao"])
     ap.add_argument("id", nargs="?")
     ap.add_argument("--tipo", help="novo: " + ", ".join(sorted(DURACAO)))
     ap.add_argument("--minutos", type=int, help="novo: duração escolhida, de 2 a 5 (aula, caso, trilha)")
     ap.add_argument("--formatos", default="h", help="h, v ou h,v")
-    ap.add_argument("--partes", help="só estas partes (narrar), ex.: 1,3")
+    ap.add_argument("--partes", help="só estas partes (narrar, cenas), ex.: 1,3")
+    ap.add_argument("--previa", action="store_true", help="cenas: só cinco fotos de cada cena, para conferir o desenho rápido")
     ap.add_argument("--aprovado", action="store_true", help="conferir: a revisão da sessão aprovou a fala")
     ap.add_argument("--destino", help="entregar: a pasta onde o vídeo final fica")
     ap.add_argument("--concorrencia", type=int, help="renderizar: quantos quadros ao mesmo tempo (menos = mais leve para a máquina)")
@@ -978,6 +1139,11 @@ def main():
             print("conferir"); conferir(a.id, aprovar_agora=a.aprovado)
             if a.comando == "conferir":
                 return
+        if a.comando == "cenas":
+            cenas(a.id, partes, a.previa)
+            return
+        if a.comando == "fazer" and cenas_pendentes(a.id):
+            print("cenas"); cenas(a.id, set(cenas_pendentes(a.id)))
         if a.comando in ("montar", "fazer"):
             print("montar"); montar(a.id, formatos)
         if a.comando in ("renderizar", "fazer"):

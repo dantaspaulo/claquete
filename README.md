@@ -8,7 +8,7 @@
 
 <a href="#-instalar"><img src="https://img.shields.io/badge/npx%20github%3Adantaspaulo%2Fclaquete-2EE59D?style=for-the-badge&logo=npm&logoColor=0F1114" alt="Instalar" /></a>
 <a href="#-tipos-de-v%C3%ADdeo"><img src="https://img.shields.io/badge/Ver%20exemplos-0F1114?style=for-the-badge&logo=youtube&logoColor=2EE59D" alt="Ver exemplos" /></a>
-<a href="CHANGELOG.md"><img src="https://img.shields.io/badge/vers%C3%A3o-2.0.0-0F1114?style=for-the-badge" alt="Versão 2.0.0" /></a>
+<a href="CHANGELOG.md"><img src="https://img.shields.io/badge/vers%C3%A3o-2.1.0-0F1114?style=for-the-badge" alt="Versão 2.1.0" /></a>
 <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-0F1114?style=for-the-badge" alt="Licença MIT" />
 
 <br/><br/>
@@ -34,14 +34,14 @@ escolha), o público e o formato: deitado, em pé ou os dois.
 | 📂 | Caso completo | um caso do começo ao fim, em série, com a ferramenta trabalhando de verdade | aulas de 2 a 5 min | ✅ |
 | 🎓 | Aula animada | aula didática e dinâmica, sem mostrar ferramenta | 2 a 5 min | ✅ |
 | 💡 | Dica rápida | um recurso só, direto ao ponto | 30 a 90 s | ✅ |
-| 📲 | Instrução no celular | passo a passo no celular, com as telas do sistema desenhadas | até 1 min | 🔜 2.2 |
+| 📲 | Instrução no celular | passo a passo no celular, com as telas do sistema desenhadas | até 1 min | 🔜 2.3 |
 | | **Redes e vendas** | | | |
-| 🧑‍💼 | Avatar apresentador | pessoa gerada por IA apresentando o seu produto ou serviço | 15 a 40 s | 🔜 2.1 |
-| 📣 | Anúncio demonstrativo | em pé, sem pessoa: gancho, a ferramenta trabalhando e o diferencial | 20 a 35 s | 🔜 2.1 |
-| ✂️ | Corte viral | uma gravação longa vira vários Reels, com legenda palavra a palavra | 15 a 45 s | 🔜 2.1 |
-| 🖼️ | Carrossel e imagem | peças de feed 4:5 tiradas do mesmo material | · | 🔜 2.1 |
+| 🧑‍💼 | Avatar apresentador | pessoa gerada por IA apresentando o seu produto ou serviço | 15 a 40 s | 🔜 2.2 |
+| 📣 | Anúncio demonstrativo | em pé, sem pessoa: gancho, a ferramenta trabalhando e o diferencial | 20 a 35 s | 🔜 2.2 |
+| ✂️ | Corte viral | uma gravação longa vira vários Reels, com legenda palavra a palavra | 15 a 45 s | 🔜 2.2 |
+| 🖼️ | Carrossel e imagem | peças de feed 4:5 tiradas do mesmo material | · | 🔜 2.2 |
 | | **Marca** | | | |
-| ✨ | Vinheta de marca | logo animado, abertura e encerramento, tipografia cinética e fundos animados | 3 a 10 s | 🔜 2.1 |
+| ✨ | Vinheta de marca | logo animado, abertura e encerramento, tipografia cinética e fundos animados | 3 a 10 s | 🔜 2.2 |
 | 🌐 | Vídeo para página | versão leve para site ou central de ajuda, com pôster e legenda | · | ✅ |
 
 <sub>Os exemplos abaixo foram feitos com este método no <b>ChatADV</b>, uma IA para advogados. Clique na imagem para ver o vídeo com som.</sub>
@@ -60,13 +60,40 @@ escolha), o público e o formato: deitado, em pé ou os dois.
 <a href="https://github.com/dantaspaulo/claquete/releases/download/v2.0.0/claquete-celular-instalar.mp4"><img src="docs/exemplos/celular-instalar.webp" width="20%" alt="Instrução no celular: instalar o app" /></a>
 <br/>
 <sub><b>Caso completo</b>: aula 6 de <a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/caso-plano-de-saude-1">Um caso do começo ao fim</a>, a IA trabalhando de verdade, com cortes, zoom e cenas animadas entre os passos.
-<b>Instrução no celular</b> (tipo da versão 2.2): instalar o app na tela inicial, com as telas do sistema desenhadas.</sub>
+<b>Instrução no celular</b> (tipo da versão 2.3): instalar o app na tela inicial, com as telas do sistema desenhadas.</sub>
 <br/><br/>
 <a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada.mp4"><img src="docs/exemplos/aula-animada.webp" width="49%" alt="Aula animada: Introdução à IA Jurídica, aula 1" /></a>
 <a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-aula-animada-2.mp4"><img src="docs/exemplos/aula-animada-2.webp" width="49%" alt="Aula animada: Introdução à IA Jurídica, aula 3" /></a>
 <br/>
 <sub><b>Aula animada</b>: aulas 1 e 3 da série <a href="https://help.chatadv.com.br/hc/central-de-ajuda/articles/ia-juridica-intro-1">Introdução à IA Jurídica</a>. Cada elemento entra no segundo em que a voz diz a palavra, e a câmera aproxima sem cortar texto.</sub>
 </div>
+
+### 🎞️ Telas animadas (novo na 2.1)
+
+Cada tela de uma aula pode ser uma **cena em React**: texto que entra palavra a palavra, esfera de energia, aurora e
+partículas no fundo, conversa sendo digitada, documento que se escreve, número que conta, câmera que aproxima sem cortar
+nada. O Claude escreve a cena depois do seu ok ao roteiro, e o estúdio a **fotografa quadro a quadro com o relógio da
+página controlado**, no segundo exato de cada palavra da voz, deitada e em pé. É o mesmo motor das aulas do ChatADV.
+
+- **Componentes do React Bits, na sua máquina.** O instalador baixa do [reactbits.dev](https://reactbits.dev) 12
+  componentes grátis (SplitText, BlurText, ShinyText, GradientText, RotatingText, TextType, CountUp, AnimatedList, Orb,
+  Aurora, Beams e Particles). Com uma licença do **React Bits Pro**, baixa também os 6 que as aulas do ChatADV usam
+  (StaggeredText, AgenticBall, SpeedingText, AnimatedList, MagicTransform e Globe).
+- **Nada deles vem neste repositório.** A licença do React Bits (MIT + Commons Clause) não deixa redistribuir os
+  componentes: cada um sai do registro oficial direto para a sua máquina, como faria o `npx shadcn add`. O teste do
+  estúdio recusa componente do React Bits versionado aqui, e o pre-commit também (num clone novo, ligue com
+  `git config core.hooksPath .githooks`).
+- **Sem eles, funciona igual:** cada peça tem uma versão própria, feita só com motion.
+- **Travas:** peça cortada pela metade na borda da câmera, zoom sem foco, cena com erro e tela parada por mais de 2,5 s
+  são recusados na captura. `kit.py cenas <id> --previa` mostra cinco fotos de cada cena antes da captura inteira.
+
+```json
+{ "fala": "Primeiro, o contexto: diga quem você é e para quem é o texto.",
+  "tela": { "tipo": "animada", "cena": "Cena2",
+            "descricao": "Uma conversa: o pedido é digitado, a IA pensa e responde escrevendo." } }
+```
+
+A aula `animada-exemplo` do estúdio tem três cenas prontas para ver como se escreve.
 
 > grava um tutorial de como cadastrar um cliente no meu sistema, deitado e em pé, sem mostrar dado real
 
@@ -83,10 +110,10 @@ escolha), o público e o formato: deitado, em pé ou os dois.
 <a href="https://github.com/dantaspaulo/claquete/releases/download/v1.2.0/claquete-editar-corte.mp4"><img src="docs/exemplos/editar-corte.webp" width="19%" alt="Corte em pé de uma gravação do Screen Studio" /></a>
 <img src="docs/exemplos/redes-carrossel.webp" width="20%" alt="Carrossel 4:5" />
 <br/>
-<sub><b>Avatar apresentador</b>, <b>anúncio demonstrativo</b>, dois <b>cortes virais</b> (um narrado, outro tirado de uma gravação do Screen Studio) e um <b>carrossel</b>. Feitos com o método no ChatADV; estes tipos entram no kit na versão 2.1.</sub>
+<sub><b>Avatar apresentador</b>, <b>anúncio demonstrativo</b>, dois <b>cortes virais</b> (um narrado, outro tirado de uma gravação do Screen Studio) e um <b>carrossel</b>. Feitos com o método no ChatADV; estes tipos entram no kit na versão 2.2.</sub>
 </div>
 
-Chegam na versão 2.1. O avatar é trocável: **Higgsfield** como principal (a pessoa e a voz saem juntas do gerador) e
+Chegam na versão 2.2. O avatar é trocável: **Higgsfield** como principal (a pessoa e a voz saem juntas do gerador) e
 **HeyGen** como alternativa (o avatar fala sobre a voz da ElevenLabs, igual em todo vídeo). O avatar é apresentador,
 nunca depoimento de cliente. O gancho fala do ganho de quem assiste, nos 2 primeiros segundos.
 
@@ -97,7 +124,7 @@ nunca depoimento de cliente. O gancho fala do ganho de quem assiste, nos 2 prime
 As [skills de motion design da iart.ai](https://github.com/iart-ai/motion-design-skills) (MIT) já são instaladas junto
 e entram nos outros tipos: direção de arte, ritmo e composição nas aulas animadas, a paleta da sua marca, e corte no
 tempo da música nos vídeos curtos. A vinheta de marca (logo animado, abertura e encerramento) vira um tipo próprio,
-com modelo pronto no estúdio, na versão 2.1.
+com modelo pronto no estúdio, na versão 2.2.
 
 <br/>
 
@@ -116,7 +143,7 @@ computador, a voz e a revisão, e só para nos dois pontos em que a decisão é 
 6. **Entrega para a sua aprovação.** Aprovado, o vídeo vai para a pasta que você escolher e a montagem é apagada.
 
 <sub>Os dois portões são travas do estúdio, não combinados: o <code>narrar</code> recusa roteiro sem ok (ou mudado depois do
-ok) e o <code>montar</code> recusa fala sem revisão. Editar gravações suas (Screen Studio, Recordly, qualquer vídeo) chega na 2.2.</sub>
+ok) e o <code>montar</code> recusa fala sem revisão. Editar gravações suas (Screen Studio, Recordly, qualquer vídeo) chega na 2.3.</sub>
 
 <br/>
 
@@ -133,15 +160,17 @@ gravações, marca, chaves e configuração.
 |---|---|
 | **1. Skills** | copia as skills da Claquete e as de motion design da iart.ai (para você, ou só para o projeto atual) |
 | **2. Estúdio** | cria a pasta `estudio-video/` com o projeto que monta os vídeos (ou atualiza a que já existe) |
-| **3. Ferramentas** | instala Remotion, React e Playwright, baixa os navegadores, instala ffmpeg e Python 3 se faltarem e, se você quiser, a transcrição local e gratuita da fala (faster-whisper, num ambiente só do estúdio) |
-| **4. Voz** | pede a chave da ElevenLabs sem mostrar na tela, guarda num `.env` só seu, põe a voz Raquel na sua conta e gera um áudio de teste |
+| **3. Ferramentas** | instala Remotion, React e Playwright, baixa os navegadores, instala ffmpeg e Python 3 se faltarem, monta o app das telas animadas e **baixa do reactbits.dev os 12 componentes grátis** para a sua máquina e, se você quiser, a transcrição local e gratuita da fala (faster-whisper, num ambiente só do estúdio) |
+| **4. Voz** | pede a chave da ElevenLabs sem mostrar na tela, guarda num `.env` só seu, põe a voz Raquel na sua conta e gera um áudio de teste. Tem licença do **React Bits Pro**? Ela é pedida aqui (opcional) e baixa os componentes Pro |
 | **5. Sua marca** | um questionário: nome, público, site, Instagram, TikTok, cores, fontes, logo, estilo de movimento, tom, palavras proibidas, glossário da sua área, voz e a chamada do fim. Aceita também uma **pasta, um HTML, um `.md` ou um link** com o padrão da marca, que o Claude lê depois |
-| **6. Teste** | valida o vídeo de exemplo e confere que o Remotion monta o projeto |
+| **6. Teste** | valida o vídeo de exemplo, confere que o Remotion monta o projeto e que as telas animadas compilam |
 
-**Uma chave só:** a da ElevenLabs. Nenhuma outra API: quem revisa a fala é a própria sessão do Claude, com subagentes.
+**Uma chave só:** a da ElevenLabs (a licença do React Bits Pro é opcional). Nenhuma outra API: quem revisa a fala é a
+própria sessão do Claude, com subagentes.
 
 Sem perguntas: `--tudo`. Outras opções: `--atualizar`, `--projeto`, `--global`, `--skills claquete,aula-animada`,
-`--estudio ./minha-pasta`, `--sem-ferramentas`, `--sem-motion`, `--sem-marca`, `--transcricao-local`, `--desinstalar`,
+`--estudio ./minha-pasta`, `--sem-ferramentas`, `--sem-motion`, `--sem-marca`, `--sem-cenas`, `--sem-reactbits`,
+`--transcricao-local`, `--desinstalar`,
 `--versao`. Instalar não apaga nada: skill que já existe vira cópia de segurança. O `--desinstalar` remove as skills e
 deixa o estúdio.
 
@@ -179,7 +208,8 @@ Tudo sai de um arquivo, `aulas/<id>.json`: o tipo, a duração escolhida, a fala
 | `aprovar` | **portão 1**: registra o ok da pessoa (o `de` das gravações fica fora dele) | arquivo com erro |
 | `narrar` | gera a voz de cada parte, com o tempo de cada palavra | roteiro sem ok, ou mudado depois do ok |
 | `conferir` | **portão 2**: relatório da fala para a revisão (com transcrição local, se instalada); `--aprovado` libera | narração que mudou depois do relatório; parte que a transcrição local reprovou |
-| `montar` | calcula quando cada elemento entra e gera o projeto do Remotion, sempre com os dois formatos | fala sem revisão; gravação ou imagem que não existe; **mais de 2,5 s sem nada novo**; duração fora do tipo ou da escolha |
+| `cenas` | fotografa as telas animadas quadro a quadro, no tempo da voz, deitadas e em pé (`--previa`: cinco fotos de cada uma) | fala sem revisão; cena que não existe ou com erro; peça cortada na borda da câmera; tela parada |
+| `montar` | calcula quando cada elemento entra e gera o projeto do Remotion, sempre com os dois formatos | fala sem revisão; gravação ou imagem que não existe; tela animada não fotografada ou mudada depois; **mais de 2,5 s sem nada novo**; duração fora do tipo ou da escolha |
 | `renderizar` | renderiza deitado (1920×1080) e/ou em pé (1080×1920), conforme `--formatos` (padrão `h`) | menos de 5 GB livres no disco |
 | `finalizar` | som em -14 LUFS, legendas `.vtt` e `.srt`, folha de quadros | **tela parada** medida no vídeo pronto |
 | `entregar <id> --destino <pasta>` | copia o vídeo final, confere a cópia e apaga a montagem | cópia que não bate de tamanho |
@@ -206,7 +236,8 @@ hora). Ele tenta passar por cada portão sem o ok e falha se algum deixar.
 
 ### Telas prontas
 
-`capa`, `lista`, `colunas`, `fluxo`, `frase`, `numero` (conta até o valor), `imagem` e `video`. Cada
+`capa`, `lista`, `colunas`, `fluxo`, `frase`, `numero` (conta até o valor), `imagem`, `video` e, desde a 2.1,
+`animada` (a cena em React, com os componentes do React Bits que estiverem na sua máquina). Cada
 elemento entra na palavra dita (`"quando": "palavra"`), fichas (`chips`) põem novidade na tela, e o
 zoom (`"foco": [x0, y0, x1, y1]`) enquadra o que importa e escurece o resto, sem cortar nada pela metade.
 
@@ -234,8 +265,10 @@ zoom (`"foco": [x0, y0, x1, y1]`) enquadra o que importa e escurece o resto, sem
 
 - **Voz:** ElevenLabs, paga por uso. Uma aula de 2 minutos é o TTS de uns 2 mil caracteres.
 - **Revisão da fala:** de graça. Quem revisa é a sessão do Claude; a transcrição, se instalada, roda na sua máquina.
-- **Avatar (versão 2.1):** pago ao provedor que você escolher. Na Higgsfield (Wan 3.0, 720p), uma tomada de 25 s custou US$ 2,00 a 2,60.
+- **Avatar (versão 2.2):** pago ao provedor que você escolher. Na Higgsfield (Wan 3.0, 720p), uma tomada de 25 s custou US$ 2,00 a 2,60.
 - **Remotion** (o renderizador): grátis para pessoas e empresas de até 3 pessoas; acima disso, [licença de empresa](https://www.remotion.dev/license).
+- **React Bits:** os componentes grátis são MIT + Commons Clause (use em qualquer projeto, inclusive comercial; só não
+  revenda nem redistribua os componentes). O Pro segue a licença que você comprou. Nenhum dos dois vem neste repositório.
 - **Fontes:** as da sua marca vêm do Google Fonts (quase todas OFL; confira a da sua); as do estúdio, Inter e Instrument
   Serif, são OFL. **Playwright:** Apache 2.0.
 - **Claquete.ai:** MIT. Use, adapte e compartilhe. Versões e mudanças no [CHANGELOG](CHANGELOG.md).

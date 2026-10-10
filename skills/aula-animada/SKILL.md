@@ -89,6 +89,7 @@ em duas aulas.
 | `numero` | `kicker`, `de`, `para`, `legenda` | um número que conta até o valor |
 | `imagem` | `arquivo` (em `public/`), `legenda`, `zooms` | foto ou ilustração |
 | `video` | `arquivo`, `de`, `velocidade`, `legenda`, `zooms` | gravação de tela (skill tutorial-de-tela) |
+| `animada` | `descricao`, `cena` (padrão `Cena<N>`), `chips` | cena em React, a tela mais rica (ver "Telas animadas") |
 
 - `*trecho*` no título fica em destaque.
 - **`quando`** amarra a entrada à palavra falada (`"palavra"`, ou `"palavra#2"` para a segunda vez).
@@ -152,10 +153,71 @@ com o que já tem: tipo de tela, `quando`, fichas, zooms, cores e fundo.
 - **color-motion**: a paleta da marca com contraste (texto sobre a janela, destaque sobre o fundo) e
   os tons de apoio (detalhes na skill claquete-marca).
 - **logo-animation**: a vinheta da marca. Hoje fica à parte; o estúdio não a encaixa no começo e no
-  fim das aulas (o tipo vinheta chega na 2.1). O logo da marca já aparece no encerramento.
-- Animação nova (um tipo de tela que não existe) é código em `src/cenas/`, e os tempos de entrada
-  precisam bater com `scripts/kit.py` (procure "RITMO" nos dois). O `--atualizar` do instalador
-  troca a pasta `src/`. Só com o pedido da pessoa; a skill remotion-video ajuda.
+  fim das aulas (o tipo vinheta chega na 2.2). O logo da marca já aparece no encerramento.
+- Ilustração, metáfora visual ou animação que os tipos prontos não fazem: use a tela `animada` (abaixo),
+  não código novo em `src/cenas/` (o `--atualizar` do instalador troca a pasta `src/`).
+
+## Telas animadas (cenas em React)
+
+A tela `animada` é a mais rica: uma cena em React com motion e os componentes do React Bits que o instalador
+baixou na máquina da pessoa, fotografada quadro a quadro com o relógio da página controlado, no segundo de cada
+palavra da voz, deitada e em pé. Use nas partes que pedem ilustração (um conceito, uma metáfora, uma conversa, um
+documento, um número) e deixe `lista`, `fluxo` e `frase` para o resto: uma aula boa mistura as duas.
+
+**No roteiro (antes do ok):** `{"tipo": "animada", "cena": "Cena3", "descricao": "o que a cena mostra"}`. A
+`descricao` é o que a pessoa aprova no portão 1: diga o que entra e em que palavra ("o documento se escreve; tamanho,
+tom e estrutura ganham o visto quando ditos"). O código da cena **ainda não existe**: o plano lista as cenas a escrever.
+
+**Depois do ok e da revisão da fala**, escreva `cenas/src/aulas/<id>.jsx` (modelo completo:
+`cenas/src/aulas/animada-exemplo.jsx`):
+
+```jsx
+import { Cena, Documento, Item, Placa, useArea, C } from "../ilustra.jsx";
+
+export function Cena3({ b }) {           // b("palavra") = o segundo da cena em que a voz diz a palavra
+  const { w, h } = useArea();            // a área da câmera: muda do deitado para o em pé
+  return (
+    <Cena kicker="2 · Formato" titulo="Mostre o *formato*" texto="Tamanho, tom e estrutura." textoEm={b("tamanho,")}>
+      <Documento em={b("exemplo")} largura={w * 0.32} style={{ position: "absolute", left: w * 0.06, top: h * 0.08 }} />
+      <Item em={b("tamanho,")} marca={b("tamanho,") + 0.3} texto="Tamanho" icone="Ruler" />
+    </Cena>
+  );
+}
+```
+
+- **`<Cena>`**: o texto (kicker, título, apoio, `lado`) fica fixo fora da câmera e nunca é cortado; os filhos ficam na
+  área da câmera, em coordenadas dela (0,0 no canto). Deitado: texto à esquerda e área de ~790 x 610 à direita (com
+  `cheia`, título em cima e área na largura toda). Em pé: texto em cima e área de 800 x ~600 embaixo. **Posicione em
+  frações de `w` e `h`**: a mesma cena sai nos dois formatos.
+- `animado` usa o texto animado do React Bits no título; `fundo="aurora" | "particulas" | "feixes"` põe um fundo vivo.
+- **Câmera:** `quadros={[[b("palavra"), { s: 1.3, foco: [x0, y0, x1, y1] }, 0.6], [b("outra"), { s: 1 }, 0.4]]}`. Todo
+  zoom tem `foco` (em coordenadas da área), que entra inteiro; o resto escurece. `tremores={[b("impacto")]}` sacode.
+- **Peças** (`cenas/src/ilustra.jsx`, nas cores e fontes da marca): `Surge`, `Depois` (monta entre dois segundos),
+  `Titulo`, `TituloRB`, `Texto`, `Kicker`, `Pilula`, `Cartao`, `Item` (com visto), `ListaViva`, `Balao`, `Digitando`,
+  `Escreve`, `Digita`, `Documento`, `Agente`, `Selo`, `Anel`, `Fio`, `Cronometro`, `Tecla`, `Assinatura`, `Carimbo`,
+  `NumeroGrande`, `Contador`, `Placa`, `Gira`, `TextoVeloz`, `TextoBrilho`, `TextoGradiente`, `Decifra`, `Palavrao`,
+  `Explosao`, `Chuva`, `Velocidade`, `Holofote`, `Flutua`, `Orbe`, `Globo`, `FundoVivo`.
+- **React Bits:** as peças `Orbe`, `FundoVivo`, `Contador`, `Gira`, `Digita`, `TextoBrilho`, `TextoGradiente`,
+  `TituloRB`, `TextoVeloz`, `ListaViva` e `Globo` usam o componente do React Bits quando ele está em
+  `cenas/src/components/react-bits/` (o instalador baixa; com a licença Pro, mais seis) e caem numa versão própria quando
+  não está. Pode usar um componente direto: `import { RB } from "../rb.js"` e `<RB.Aurora ... />`, sempre com
+  plano B (`RB.Aurora ? ... : ...`), porque o estúdio de outra pessoa pode não ter. **Nunca copie um componente do React
+  Bits para fora dessa pasta nem o mande a ninguém**: a licença não deixa redistribuir.
+- **Ritmo:** uma novidade a cada 2 s, amarrada às palavras (`b("...")`). Pulsar e flutuar não contam.
+
+**Conferir e fotografar:**
+1. `python3 scripts/kit.py cenas <id> --previa`: cinco fotos de cada cena, deitada e em pé, em
+   `saida/<id>/previa-NN-h.jpg` e `previa-NN-v.jpg`, e a guarda de cortes. **Revisor das prévias:** um subagente com
+   modelo rápido escrito no pedido (sonnet) abre as imagens e aponta texto cortado, peça sobreposta, área vazia demais,
+   cor fora da marca e o que não bate com a `descricao` aprovada. Corrija e tire a prévia de novo.
+2. `python3 scripts/kit.py cenas <id>`: a captura inteira (uns 13 s de máquina por segundo de cena, nos dois formatos).
+   Recusa erro na cena, palavra que a fala não tem, peça cortada pela metade na borda da câmera, quadro vazio e tela
+   parada. O `fazer` roda isso sozinho para as cenas pendentes.
+3. O `montar` recusa a tela animada não fotografada ou que mudou depois (código da cena, componentes, tempo da voz,
+   duração, tema): fotografe de novo só a parte (`cenas <id> --partes 3`).
+
+Se a captura disser que não abriu o navegador: `npx playwright install chromium` no estúdio (ou
+`CLAQUETE_CHROMIUM=<caminho de um Chrome>`). Sem o app de cenas (`cenas/node_modules`): `cd cenas && npm install`.
 
 ## O fluxo
 
@@ -227,7 +289,12 @@ marcou para ouvir com atenção.
     áudio está certo.
 - O `--aprovado` recusa se alguma parte ficou `reprovada`, ou se a narração mudou depois do relatório.
 
-### 5. Montar, renderizar, finalizar
+### 5. Cenas animadas (só se a aula tiver tela `animada`)
+
+Escreva as cenas e fotografe-as (seção "Telas animadas"): prévia, revisão das prévias por subagente, captura. O
+`fazer` fotografa sozinho as pendentes, mas a prévia revisada vem antes.
+
+### 6. Montar, renderizar, finalizar
 
 - `python3 scripts/kit.py fazer <id> --formatos h,v` de novo (pula a voz e a revisão já feitas), ou
   por partes: `montar`, `renderizar`, `finalizar`. O `montar` prepara sempre os dois formatos; o
@@ -240,7 +307,7 @@ marcou para ouvir com atenção.
   render": aí renderize.
 - Para ver no navegador antes do render: `npm run studio`, depois do `montar`.
 
-### 6. Revisão da folha de quadros
+### 7. Revisão da folha de quadros
 
 `saida/<id>/<id>-h-folha.jpg` (e `<id>-v-folha.jpg`): 16 quadros do vídeo. **Revisor da folha**: um
 subagente com um modelo rápido escrito no pedido (sonnet, por exemplo), que abre as imagens e aponta:
@@ -261,7 +328,7 @@ ffmpeg -ss <segundo> -i saida/<id>/<id>-h.mp4 -frames:v 1 saida/<id>/quadros/q1.
 
 Corrija o que ele apontar e rode de `montar` em diante.
 
-### 7. Mudou depois do ok
+### 8. Mudou depois do ok
 
 - **Qualquer mudança no arquivo da aula depois do `aprovar`**, até uma ficha ou um foco de zoom:
   mostre à pessoa só a diferença e peça ok novo; com ele, `aprovar <id>` de novo. O `fazer` e o
@@ -273,7 +340,7 @@ Corrija o que ele apontar e rode de `montar` em diante.
   O `fazer`, e o `narrar` sem `--partes`, narrariam a aula inteira de novo. Já mudar a `pronuncia`
   de uma palavra só muda as partes cuja fala usa essa palavra: o `narrar` sem `--partes` refaz só elas.
 
-### 8. Entrega
+### 9. Entrega
 
 - Mostre o vídeo pronto (`saida/<id>/<id>-h.mp4`, `<id>-v.mp4`), a duração e o que as revisões
   acharam e corrigiram. **Pare e espere o ok.**
@@ -292,6 +359,8 @@ python3 scripts/kit.py plano <id>                       # portão 1: mostre e es
 python3 scripts/kit.py aprovar <id>                     # só com o ok da pessoa
 python3 scripts/kit.py fazer <id> --formatos h,v        # narra e para no portão 2
 python3 scripts/kit.py conferir <id> --aprovado         # depois da revisão da fala
+python3 scripts/kit.py cenas <id> --previa              # telas animadas: fotos para conferir o desenho
+python3 scripts/kit.py cenas <id>                       # telas animadas: a captura inteira
 python3 scripts/kit.py fazer <id> --formatos h,v        # monta, renderiza e finaliza
 python3 scripts/kit.py entregar <id> --destino <pasta>  # depois do ok ao vídeo pronto
 ```

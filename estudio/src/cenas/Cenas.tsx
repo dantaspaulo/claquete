@@ -44,8 +44,9 @@ const Linha: React.FC<{ t: number; n?: number; children: React.ReactNode }> = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: `${tema.destaque}22`,
+          background: `radial-gradient(circle at 35% 30%, ${tema.destaque}44, ${tema.destaque}14)`,
           border: `1.5px solid ${tema.destaque}`,
+          boxShadow: `0 0 ${24 * p}px ${tema.destaque}55`,
           color: tema.destaque,
           fontFamily: pilha(tema.fonte_texto),
           fontWeight: 700,
@@ -88,10 +89,34 @@ const chipsDe = (tela: Tela, palavras: Palavra[]) =>
   (tela.chips || []).map((c) => ({ texto: c.texto, t: quando(palavras, c.quando) ?? 0 }));
 
 // ── capa ─────────────────────────────────────────────── RITMO: kicker 0 · título 0,15 · sub 1,2
+// Luz suave que passeia atrás do texto (Capa e Frase): profundidade, não informação nova.
+const Luz: React.FC<{ x?: number; y?: number }> = ({ x = 0.72, y = 0.4 }) => {
+  const frame = useCurrentFrame();
+  const { tema } = useAmbiente();
+  const t = frame / FPS;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: `${(x + 0.05 * Math.sin(t / 3)) * 100}%`,
+        top: `${(y + 0.05 * Math.cos(t / 4)) * 100}%`,
+        width: 760,
+        height: 760,
+        transform: "translate(-50%, -50%)",
+        borderRadius: "50%",
+        background: `radial-gradient(circle, ${tema.destaque}2a 0%, ${tema.destaque2}12 38%, transparent 68%)`,
+        filter: "blur(10px)",
+        pointerEvents: "none",
+      }}
+    />
+  );
+};
+
 const Capa: React.FC<Props> = ({ tela, palavras }) => {
   if (tela.tipo !== "capa") return null;
   return (
     <Palco centro>
+      <Luz />
       <Kicker texto={tela.kicker} />
       <Titulo texto={tela.titulo} tamanho={120} />
       <Sub texto={tela.sub} t={1.2} />
@@ -137,7 +162,8 @@ const Colunas: React.FC<Props> = ({ tela, palavras, duracao }) => {
           flex: 1,
           borderRadius: 18,
           padding: 30 * esc,
-          background: forte ? `${tema.destaque}14` : `${tema.texto}08`,
+          background: forte ? `linear-gradient(160deg, ${tema.destaque}24, ${tema.destaque}0a)` : `linear-gradient(160deg, ${tema.texto}0f, ${tema.texto}05)`,
+          boxShadow: forte ? `0 0 60px ${tema.destaque}1c` : "none",
           border: `1.5px solid ${forte ? tema.destaque : tema.suave}55`,
           ...sobe(p, 30),
         }}
@@ -192,8 +218,9 @@ const Fluxo: React.FC<Props> = ({ tela, palavras, duracao }) => {
                   flex: 1,
                   borderRadius: 16,
                   padding: `${26 * esc}px ${22 * esc}px`,
-                  background: `${tema.destaque}12`,
+                  background: `linear-gradient(160deg, ${tema.destaque}22, ${tema.destaque}08)`,
                   border: `1.5px solid ${tema.destaque}66`,
+                  boxShadow: `0 18px 40px #0004, inset 0 1px 0 ${tema.texto}14`,
                   ...sobe(p, 24),
                 }}
               >
@@ -228,9 +255,29 @@ const Fluxo: React.FC<Props> = ({ tela, palavras, duracao }) => {
 
 // ── frase ────────────────────────────────────────────── RITMO: kicker 0 · título 0,15 · sub max(1,6; 50%)
 const Frase: React.FC<Props> = ({ tela, palavras, duracao }) => {
+  const frame = useCurrentFrame();
+  const { tema, esc } = useAmbiente();
   if (tela.tipo !== "frase") return null;
+  const p = entra(frame, 0.05, FPS);
   return (
     <Palco centro>
+      <Luz x={0.25} y={0.35} />
+      <div
+        style={{
+          position: "absolute",
+          left: 40 * esc,
+          top: -40 * esc,
+          fontFamily: pilha(tema.fonte_titulo),
+          fontSize: 420 * esc,
+          lineHeight: 1,
+          color: tema.destaque,
+          opacity: 0.12 * Math.min(1, p * 1.4),
+          transform: `translateY(${(1 - p) * 40}px)`,
+          pointerEvents: "none",
+        }}
+      >
+        “
+      </div>
       <Kicker texto={tela.kicker} />
       <Titulo texto={tela.titulo} tamanho={96} />
       <Sub texto={tela.sub} t={Math.max(1.6, duracao * 0.5)} />
@@ -260,7 +307,7 @@ const Numero: React.FC<Props> = ({ tela, palavras, duracao }) => {
   return (
     <Palco centro>
       <Kicker texto={tela.kicker} />
-      <div style={{ fontFamily: pilha(tema.fonte_titulo), fontSize: 220 * esc, lineHeight: 1, color: tema.destaque, transform: `scale(${0.7 + 0.3 * p})`, transformOrigin: "left center" }}>
+      <div style={{ fontFamily: pilha(tema.fonte_titulo), fontSize: 220 * esc, lineHeight: 1, color: tema.destaque, transform: `scale(${0.7 + 0.3 * p})`, transformOrigin: "left center", textShadow: `0 0 60px ${tema.destaque}55, 0 20px 50px #0006` }}>
         {mostrado}
       </div>
       <Sub texto={tela.legenda} t={fim + 0.3} tamanho={48} />
@@ -357,6 +404,18 @@ const Midia: React.FC<Props> = ({ tela, palavras, duracao }) => {
   );
 };
 
+// ── animada ───────────────────────────────────────────── a cena fotografada (cenas/), do tamanho da área da janela
+const Animada: React.FC<Props> = ({ tela, palavras }) => {
+  const { formato } = useAmbiente();
+  if (tela.tipo !== "animada" || !tela.clipes) return null;
+  return (
+    <div style={{ position: "absolute", inset: 0 }}>
+      <OffthreadVideo src={staticFile(tela.clipes[formato])} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      <Chips chips={chipsDe(tela, palavras)} />
+    </div>
+  );
+};
+
 export const Cena: React.FC<Props> = (props) => {
   switch (props.tela.tipo) {
     case "capa":
@@ -374,5 +433,7 @@ export const Cena: React.FC<Props> = (props) => {
     case "video":
     case "imagem":
       return <Midia {...props} />;
+    case "animada":
+      return <Animada {...props} />;
   }
 };

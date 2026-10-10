@@ -1,0 +1,40 @@
+{
+ "_o_que_e": "Aula de exemplo com telas ANIMADAS (versão 2.1): cada tela é uma cena em React, em cenas/src/aulas/animada-exemplo.jsx, fotografada no tempo da voz. Rode: python3 scripts/kit.py fazer animada-exemplo",
+ "titulo": "Pedidos melhores para a IA, em cenas animadas",
+ "cabecalho": "Claquete · Cenas animadas",
+ "tipo": "exemplo",
+ "destaques": [
+  "contexto",
+  "exemplo",
+  "formato"
+ ],
+ "partes": [
+  {
+   "fala": "Um pedido bom para a IA tem três partes: contexto, exemplo e formato. Com elas, a resposta melhora já na primeira tentativa.",
+   "rotulo": "Cenas animadas",
+   "tela": {
+    "tipo": "animada",
+    "cena": "Cena1",
+    "descricao": "Abertura: o título entra palavra a palavra; no centro, uma esfera de energia pulsa em contexto, exemplo e formato, e uma pílula entra com cada palavra; na resposta, uma explosão de partículas e o selo da primeira tentativa."
+   }
+  },
+  {
+   "fala": "Primeiro, o contexto: diga quem você é e para quem é o texto. A IA deixa de chutar e escreve para o público certo.",
+   "rotulo": "Contexto",
+   "tela": {
+    "tipo": "animada",
+    "cena": "Cena2",
+    "descricao": "Uma conversa: o pedido com o contexto é digitado, a IA pensa (três pontinhos) e responde escrevendo; a pílula do público certo entra no fim."
+   }
+  },
+  {
+   "fala": "Depois, mostre um exemplo e diga o formato: tamanho, tom e estrutura. Em vez de cinco tentativas, uma basta.",
+   "rotulo": "Exemplo e formato",
+   "tela": {
+    "tipo": "animada",
+    "cena": "Cena3",
+    "descricao": "Um documento de exemplo se escreve linha a linha; tamanho, tom e estrutura ganham o visto quando ditos; as tentativas viram de 5 para 1, e o texto em degradê fecha com uma basta."
+   }
+  }
+ ]
+}

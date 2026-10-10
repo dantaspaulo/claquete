@@ -7,6 +7,37 @@ Git (`vX.Y.Z`) e na página de versões do GitHub, sempre iguais.
 - **X.Y.0**: melhoria ou recurso novo que não quebra nada (2.1, 2.2...).
 - **X.Y.Z**: correção (2.1.1, 2.1.2...).
 
+## 2.1.0 · 09/10/2026
+
+Telas animadas: o visual das aulas do ChatADV agora sai de qualquer estúdio. Quem tem a 2.0 atualiza com
+`npx github:dantaspaulo/claquete --atualizar`.
+
+- **Tela `animada`:** a cena é um componente React em `cenas/src/aulas/<id>.jsx`, escrito depois do ok ao roteiro (o plano
+  mostra a `descricao` de cada uma e lista as cenas a escrever). `kit.py cenas <id>` compila o app de cenas (Vite + React +
+  motion), abre cada cena com o relógio da página controlado e fotografa quadro a quadro, deitada e em pé, no segundo
+  de cada palavra da voz. `--previa` tira cinco fotos de cada cena; o `fazer` fotografa sozinho o que estiver pendente.
+- **Peças prontas** em `cenas/src/ilustra.jsx`, nas cores e fontes da marca: título palavra a palavra, cena com o texto
+  fixo fora da câmera, câmera com zoom que só aceita foco inteiro (o resto escurece), balões de conversa, digitação,
+  documento que se escreve, itens com visto, contador, placa que vira, explosão, selo, esfera de energia, fundo vivo
+  (aurora, partículas, feixes) e mais.
+- **React Bits na máquina de quem instala:** o instalador baixa do reactbits.dev 12 componentes grátis (SplitText,
+  BlurText, ShinyText, GradientText, RotatingText, TextType, CountUp, AnimatedList, Orb, Aurora, Beams, Particles) e, com
+  uma licença do React Bits Pro (opcional, pedida junto da chave da ElevenLabs), os 6 que as aulas do ChatADV usam.
+  Sem eles, cada peça usa a versão própria, só com motion.
+- **Licença protegida por mecanismo:** nenhum componente do React Bits entra neste repositório (a licença deles não deixa
+  redistribuir). O `teste.py` recusa componente versionado, e o pre-commit (`.githooks`, ligado com
+  `git config core.hooksPath .githooks`) recusa o commit.
+- **Travas da captura:** erro na cena, palavra que a fala não tem, peça cortada pela metade na borda da câmera, quadro
+  vazio e tela parada por mais de 2,5 s. O `montar` recusa tela animada não fotografada, ou que mudou depois (código da
+  cena, componentes, tempo da voz, duração ou tema).
+- **Telas prontas mais bonitas:** título que entra desfocando, etiqueta em pílula, luz que passeia atrás da capa e da
+  frase, aspas grandes na frase, número com brilho, cartões em degradê, janela com brilho de vidro e fundo com pontos
+  que derivam. Os tempos de entrada não mudaram.
+- Instalador: `--sem-cenas` e `--sem-reactbits`; o `--sem-ferramentas` também pula o navegador do Playwright.
+  `CLAQUETE_CHROMIUM` usa um Chrome que já existe na máquina para fotografar as cenas.
+- Próximas: **2.2** redes (avatar, anúncio demonstrativo, corte viral, carrossel e imagem 4:5) e vinheta de marca;
+  **2.3** edição das suas gravações e instrução no celular.
+
 ## 2.0.0 · 09/10/2026
 
 Mudança grande: o fluxo, as skills e a instalação foram reorganizados. Quem tem a 1.x atualiza com

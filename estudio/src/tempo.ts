@@ -46,5 +46,5 @@ export function entra(frame: number, segundo: number, fps = FPS, suave = false) 
 }
 
 export function sobe(p: number, distancia = 28) {
-  return { opacity: Math.min(1, p * 1.4), transform: `translateY(${(1 - p) * distancia}px)` };
+  return { opacity: Math.min(1, p * 1.4), transform: `translateY(${(1 - p) * distancia}px)`, filter: `blur(${Math.max(0, (1 - p) * 8).toFixed(2)}px)` };
 }

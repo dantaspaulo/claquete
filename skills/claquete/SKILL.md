@@ -80,6 +80,10 @@ pronta em cada item, para a pessoa só confirmar:
 
 Dica sem ferramenta (um conceito em um minuto): tipo `dica`, com as telas animadas da aula-animada.
 
+Desde a 2.1, qualquer tipo pode ter telas `animada`: cenas em React com os componentes do React Bits que o instalador
+baixou nesta máquina, fotografadas no tempo da voz. É o visual das aulas do ChatADV; os detalhes estão na skill
+aula-animada ("Telas animadas"). Prefira-as nas partes que pedem ilustração.
+
 ```bash
 python3 scripts/kit.py novo <id> --tipo aula --minutos 3
 python3 scripts/kit.py novo <id> --tipo demonstracao
@@ -101,7 +105,7 @@ do portão 1: o `plano` mostra a duração estimada.
    sem aprovação ou mudado depois dela. Gravação que ainda não existe (tela `video` ou `imagem`)
    não trava o portão: aparece como aviso e na seção "A gravar depois do ok" do plano, e só o
    `montar` a recusa. O `de` das telas `video` fica fora do ok: acertá-lo depois de gravar não pede
-   ok novo.
+   ok novo. Tela `animada` entra no plano pela `descricao`; o código da cena se escreve depois do ok.
 4. **Execução.** Grava a ferramenta, quando há, e narra com a ElevenLabs (a parte paga).
 5. **Portão 2: revisão da fala.** `kit.py conferir <id>` gera `public/aulas/<id>/conferencia.json` e
    sai com código 2. Um subagente confere cada parte. Aprovou: `kit.py conferir <id> --aprovado`.
@@ -109,12 +113,14 @@ do portão 1: o `plano` mostra a duração estimada.
    roteiro, e só as partes que usam a palavra são narradas de novo; reescrever uma frase muda o
    roteiro, e a frase nova volta à pessoa (portão 1). Sem transcrição
    local, a pessoa ouve os áudios listados no relatório antes do `--aprovado`.
-6. **Montagem.** `montar`, `renderizar`, `finalizar`: ritmo, duração, som em -14 LUFS, legendas e
+6. **Cenas animadas**, se houver: escrever, `kit.py cenas <id> --previa`, revisão das prévias por um
+   subagente, e `kit.py cenas <id>` (a captura inteira). O `fazer` fotografa sozinho as pendentes.
+7. **Montagem.** `montar`, `renderizar`, `finalizar`: ritmo, duração, som em -14 LUFS, legendas e
    folha de quadros. O `montar` prepara sempre os dois formatos; o `--formatos` (`h`, `v` ou `h,v`,
    padrão `h`) vale para `renderizar`, `finalizar` e `fazer`.
-7. **Revisão da folha de quadros** por um subagente: texto cortado, tela vazia, zoom ruim, dado
+8. **Revisão da folha de quadros** por um subagente: texto cortado, tela vazia, zoom ruim, dado
    sensível. O Claude corrige e monta de novo.
-8. **Entrega.** Mostre o vídeo pronto e espere o ok. Com ele: `kit.py entregar <id> --destino <pasta>`.
+9. **Entrega.** Mostre o vídeo pronto e espere o ok. Com ele: `kit.py entregar <id> --destino <pasta>`.
 
 `kit.py fazer <id> --formatos h,v` roda tudo na ordem e para nos portões. Código de saída 2 é parada
 de propósito (mensagem `AGUARDANDO`, com o que falta); 1 é erro (`PAROU`, com o motivo). Leia a
@@ -167,13 +173,13 @@ Diga o que dá para fazer hoje e não prometa o resto.
 
 | Pedido | Chega na | O que dá hoje |
 |---|---|---|
-| Avatar apresentador (Higgsfield como principal, HeyGen como alternativa) | 2.1 | nenhum avatar. Uma dica ou demonstração em pé, narrada pela voz da marca. O provedor escolhido já fica em `marca.json` (`avatar`) |
-| Anúncio demonstrativo (em pé, sem pessoa, 20 a 35 s) | 2.1 | uma `dica` em pé (`--formatos v`) com o ganho de quem assiste na primeira frase; o piso da dica é 30 s |
-| Corte viral (uma gravação longa em vários Reels) | 2.1 | o em pé de qualquer vídeo do estúdio já sai com legenda palavra a palavra; tirar vários cortes de uma gravação, ainda não |
-| Carrossel e imagem 4:5 | 2.1 | ainda não: o estúdio só faz 16:9 e 9:16 |
-| Vinheta de marca | 2.1 | a skill logo-animation, com a remotion-video, pode montar uma vinheta curta à parte, fora das travas do estúdio; ela não entra sozinha no começo e no fim dos vídeos |
-| Editar as gravações da pessoa (Screen Studio, Recordly ou qualquer vídeo) | 2.2 | exportado em MP4, o vídeo entra como tela `video` numa demonstração: corte com `de`, aceleração com `velocidade`, zoom e a voz da ElevenLabs por cima. O som original não entra (a tela `video` é muda); cortar muletas da fala da pessoa, ainda não |
-| Instrução no celular | 2.2 | um site em tamanho de celular dá para gravar e narrar em pé; as telas do sistema do celular (instalar o app, liberar notificação), ainda não |
+| Avatar apresentador (Higgsfield como principal, HeyGen como alternativa) | 2.2 | nenhum avatar. Uma dica ou demonstração em pé, narrada pela voz da marca. O provedor escolhido já fica em `marca.json` (`avatar`) |
+| Anúncio demonstrativo (em pé, sem pessoa, 20 a 35 s) | 2.2 | uma `dica` em pé (`--formatos v`) com o ganho de quem assiste na primeira frase; o piso da dica é 30 s |
+| Corte viral (uma gravação longa em vários Reels) | 2.2 | o em pé de qualquer vídeo do estúdio já sai com legenda palavra a palavra; tirar vários cortes de uma gravação, ainda não |
+| Carrossel e imagem 4:5 | 2.2 | ainda não: o estúdio só faz 16:9 e 9:16 |
+| Vinheta de marca | 2.2 | a skill logo-animation, com a remotion-video, pode montar uma vinheta curta à parte, fora das travas do estúdio; ela não entra sozinha no começo e no fim dos vídeos |
+| Editar as gravações da pessoa (Screen Studio, Recordly ou qualquer vídeo) | 2.3 | exportado em MP4, o vídeo entra como tela `video` numa demonstração: corte com `de`, aceleração com `velocidade`, zoom e a voz da ElevenLabs por cima. O som original não entra (a tela `video` é muda); cortar muletas da fala da pessoa, ainda não |
+| Instrução no celular | 2.3 | um site em tamanho de celular dá para gravar e narrar em pé; as telas do sistema do celular (instalar o app, liberar notificação), ainda não |
 
 ## 8. A máquina
 

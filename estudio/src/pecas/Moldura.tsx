@@ -36,8 +36,24 @@ export const Fundo: React.FC = () => {
           linear-gradient(160deg, ${tema.fundo2} 0%, ${tema.fundo} 70%)`,
         width,
         height,
+        overflow: "hidden",
       }}
-    />
+    >
+      {/* pontos que derivam devagar e uma vinheta: profundidade sem disputar com a janela */}
+      <div
+        style={{
+          position: "absolute",
+          inset: -60,
+          backgroundImage: `radial-gradient(${tema.texto}22 1.4px, transparent 1.6px)`,
+          backgroundSize: "38px 38px",
+          transform: `translate(${(t * 1.2) % 38}px, ${(t * 0.6) % 38}px)`,
+          maskImage: "radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%)",
+          opacity: 0.6,
+        }}
+      />
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 80% 75% at 50% 45%, transparent 55%, ${tema.fundo}cc 100%)` }} />
+    </div>
   );
 };
 
@@ -62,8 +78,8 @@ export const Janela: React.FC<{ x: number; y: number; w: number; h: number; cabe
         width: w,
         height: h,
         borderRadius: 22,
-        background: tema.janela,
-        boxShadow: `0 40px 120px #000a, 0 0 0 1px ${tema.destaque}26`,
+        background: `linear-gradient(180deg, ${tema.texto}0a 0%, transparent 18%), ${tema.janela}`,
+        boxShadow: `0 40px 120px #000a, 0 0 0 1px ${tema.destaque}2e, inset 0 1px 0 ${tema.texto}22, 0 0 80px ${tema.destaque}14`,
         overflow: "hidden",
         opacity: p,
         transform: `scale(${0.96 + 0.04 * p})`,
@@ -148,7 +164,8 @@ export const Chips: React.FC<{ chips: { texto: string; t: number }[] }> = ({ chi
               fontWeight: 600,
               color: tema.texto,
               border: `1.5px solid ${tema.destaque}88`,
-              background: `${tema.destaque}1f`,
+              background: `linear-gradient(180deg, ${tema.destaque}2e, ${tema.destaque}14)`,
+              boxShadow: `0 8px 30px ${tema.destaque}22, inset 0 1px 0 ${tema.texto}1f`,
               padding: "10px 22px",
               borderRadius: 999,
               opacity: Math.min(1, p * 1.5),

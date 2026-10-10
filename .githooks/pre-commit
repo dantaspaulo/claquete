@@ -1,0 +1,8 @@
+#!/bin/sh
+# Recusa commit que traga componente do React Bits para este repositório PÚBLICO: a licença dele (MIT + Commons Clause)
+# não deixa redistribuir os componentes. O instalador baixa cada um na máquina de quem instala.
+# Ligar num clone novo: git config core.hooksPath .githooks   (o estudio/scripts/teste.py confere o mesmo em todo teste)
+git diff --cached --name-only --diff-filter=ACR -z | xargs -0 python3 estudio/scripts/teste.py --licenca || {
+  echo "commit recusado: tire o arquivo acima (git restore --staged <arquivo>)."
+  exit 1
+}

@@ -1,0 +1,23 @@
+{
+  "name": "claquete-cenas",
+  "private": true,
+  "type": "module",
+  "description": "Cenas animadas da Claquete.ai (React + motion + os componentes do React Bits que o instalador baixa na sua máquina), fotografadas quadro a quadro pelo capturar.cjs no tempo da narração.",
+  "scripts": {
+    "build": "vite build --logLevel error"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.23.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@vitejs/plugin-react": "^4.6.0",
+    "tailwindcss": "^4.1.0",
+    "vite": "^6.3.0"
+  }
+}

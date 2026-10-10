@@ -8,3 +8,9 @@ estudio/sessao*.json
 __pycache__/
 *.pyc
 estudio/.env
+# telas animadas: dependências, compilação e os componentes do React Bits (baixados na máquina de quem instala; a
+# licença do React Bits não deixa redistribuir, então NUNCA entram aqui; o teste do estúdio e o pre-commit recusam)
+estudio/cenas/node_modules/
+estudio/cenas/dist/
+estudio/cenas/src/components/react-bits/
+estudio/cenas/public/vendor/

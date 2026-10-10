@@ -41,8 +41,10 @@ export const Titulo: React.FC<{ texto: string; tamanho: number; aPartir?: number
                   display: "inline-block",
                   opacity: Math.min(1, p * 1.3),
                   transform: `translateY(${(1 - p) * 0.35 * tamanho * esc}px)`,
+                  filter: `blur(${Math.max(0, (1 - p) * 10).toFixed(2)}px)`,
                   color: destaque ? tema.destaque : tema.texto,
                   fontStyle: destaque ? "italic" : "normal",
+                  textShadow: destaque ? `0 0 ${0.35 * tamanho * esc}px ${tema.destaque}55` : "none",
                 }}
               >
                 {w}
@@ -63,14 +65,19 @@ export const Kicker: React.FC<{ texto?: string; aPartir?: number }> = ({ texto, 
     <div
       style={{
         fontFamily: pilha(tema.fonte_texto),
-        fontSize: 22 * esc,
+        fontSize: 20 * esc,
         fontWeight: 700,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
         color: tema.destaque,
+        alignSelf: "flex-start",
+        padding: `${7 * esc}px ${16 * esc}px`,
+        borderRadius: 999,
+        background: `${tema.destaque}1a`,
+        border: `1.5px solid ${tema.destaque}55`,
         opacity: Math.min(1, p * 1.5),
         transform: `translateX(${(1 - p) * -24}px)`,
-        marginBottom: 18 * esc,
+        marginBottom: 22 * esc,
       }}
     >
       {texto}

@@ -1,0 +1,7 @@
+@import "tailwindcss";
+/* Tailwind também olha as cenas e os componentes baixados do React Bits */
+@source "./";
+
+html, body { margin: 0; overflow: hidden; background: var(--fundo, #12161a); }
+#root { width: var(--w, 1280px); height: var(--h, 610px); overflow: hidden; }
+* { box-sizing: border-box; }

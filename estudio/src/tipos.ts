@@ -16,7 +16,9 @@ export type Tela =
   | { tipo: "frase"; kicker?: string; titulo: string; sub?: string; chips?: Chip[] }
   | { tipo: "numero"; kicker?: string; de?: string; para: string; legenda?: string; chips?: Chip[] }
   | { tipo: "video"; arquivo: string; de?: number; velocidade?: number; legenda?: string; zooms?: Zoom[]; chips?: Chip[] }
-  | { tipo: "imagem"; arquivo: string; legenda?: string; zooms?: Zoom[]; chips?: Chip[] };
+  | { tipo: "imagem"; arquivo: string; legenda?: string; zooms?: Zoom[]; chips?: Chip[] }
+  // cena em React (cenas/src/aulas/<id>.jsx) fotografada pelo kit.py cenas; o montar põe os clipes de cada formato
+  | { tipo: "animada"; cena?: string; descricao: string; clipes?: { h: string; v: string }; chips?: Chip[] };
 
 export type Parte = {
   fala: string;
